@@ -1,4 +1,18 @@
 {
-  "repo": {"owner": "", "name": "", "branch": "main"},
-  "users": {}
+  "repo": {
+    "owner": "0slownpl-coder",
+    "name": "wyniki",
+    "branch": "main"
+  },
+  "users": {
+    "damnz": {
+      "iv": "rXRLx3/sCP6VzO20",
+      "ct": "gR98QSia3w8jBnWKayv8HYxRJRSoGW8Y2LqkpP2zj6jN8A9De1LwZMC5tBYafzCK",
+      "salt": "yu0NK+meB4FUSP82YXNpKQ=="
+    }
+  },
+  "token": {
+    "iv": "QNdcVcj8HVRHqtSm",
+    "ct": "iI5ZiX+gEfen6cqLvbqDSKT+2cZE8vESAaYfQpqyOiTaFLU2TqbtudfcHwHIcgif+7A3Q8JA+EAEk5RIIrzb2tmpPODPgPIVlQNfhZfHuGy/pxZ8TZtf22HJCsTQsc9kuDtTXI7CBUK4myz/nw=="
+  }
 }
