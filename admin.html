@@ -55,6 +55,14 @@ input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(26,166,232,.15)}
 .links a{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--deep)}
 small.h{display:block;font-size:12px;color:var(--mut);margin-top:6px}
 small.h a{color:var(--deep);text-decoration:underline}
+.evf{display:grid;grid-template-columns:180px 150px 1fr;gap:12px}
+.evl li{align-items:center}
+.evl .ed{min-width:130px;font-weight:700;color:var(--navy)}
+.evl .et{flex:1;color:var(--ink);font-size:14px}
+.evl li.past{opacity:.5}
+.del{font:700 11px var(--f);letter-spacing:.14em;text-transform:uppercase;color:#a12828;background:#fff;border:1px solid #f5c9c9;border-radius:999px;padding:8px 14px;cursor:pointer;flex:none}
+.del:hover{background:#fdecec}
+@media(max-width:600px){.evf{grid-template-columns:1fr 1fr}.evf .evt{grid-column:1/-1}.evl li{flex-wrap:wrap}.evl .ed{min-width:0;width:100%}}
 @media(max-width:600px){.hd{padding:8px 8px 8px 16px}.hd img{height:44px}.who span{display:none}.card{padding:24px}.row3{grid-template-columns:1fr}}
 </style>
 </head>
@@ -105,6 +113,17 @@ small.h a{color:var(--deep);text-decoration:underline}
         <label class="drop" id="drop"><input type="file" id="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"><b id="dropT">Kliknij lub przeciągnij plik .xlsx</b><span id="dropS">maks. 20 MB</span></label>
         <button class="btn" id="upBtn" type="button" disabled>Wgraj na stronę</button>
       </div>
+      <form class="card wide" id="fEv">
+        <h2>Terminarz</h2>
+        <p class="sub">Dodaj zawody — pojawią się na podstronie „Terminarz” po ok. 1–2 minutach. Tekst po „ &gt; ” wyświetla się jako podtytuł (np. kierunek jazdy).</p>
+        <div class="evf">
+          <div><label>Data</label><input name="d" type="date" required></div>
+          <div><label>Godzina</label><input name="t" type="time" value="08:00" required></div>
+          <div class="evt"><label>Tytuł</label><input name="ti" maxlength="200" placeholder="np. Spotkanie Zimowej Ligi SWS Sprint Cup > Kierunek Normal (Skrót)" required></div>
+        </div>
+        <button class="btn">Dodaj wydarzenie</button>
+        <ul class="list evl" id="evList"><li><span>Wczytuję…</span></li></ul>
+      </form>
       <form class="card" id="fLogin">
         <h2>Zmiana loginu</h2>
         <label>Nowy login</label><input name="n" autocomplete="username" required>
@@ -135,7 +154,7 @@ small.h a{color:var(--deep);text-decoration:underline}
     </div>
   </div>
 
-  <div class="links"><a href="index.html">← Wyniki zawodów</a></div>
+  <div class="links"><a href="index.html">← Wyniki zawodów</a><a href="terminarz.html">Terminarz →</a></div>
 </main>
 
 <script>
@@ -188,7 +207,7 @@ function loadCfg(token){
 function saveCfg(message){var txt=JSON.stringify(cfg,null,2)+'\n';return ghPut(CFG_PATH,b64(enc.encode(txt)),message,S.token)}
 
 /* ---------- sesja ---------- */
-function startSession(login,raw,token){return aesKey(raw).then(function(k){S={login:login,raw:raw,key:k,token:token};var st=store();if(st)st.setItem('cx_s',JSON.stringify({l:login,r:b64(raw),t:token}));renderUsers();show('#vPanel')})}
+function startSession(login,raw,token){return aesKey(raw).then(function(k){S={login:login,raw:raw,key:k,token:token};var st=store();if(st)st.setItem('cx_s',JSON.stringify({l:login,r:b64(raw),t:token}));renderUsers();show('#vPanel');loadEv()})}
 function endSession(){S=null;var st=store();if(st)st.removeItem('cx_s');$('#lP').value='';show('#vLogin')}
 function renderUsers(){var ul=$('#users');ul.innerHTML='';Object.keys(cfg.users).sort().forEach(function(n){var li=document.createElement('li'),b=document.createElement('b'),sp=document.createElement('span');b.textContent=n;sp.textContent=(S&&n===S.login)?'Ty':'admin';li.appendChild(b);li.appendChild(sp);ul.appendChild(li)});$('#fLogin').n.value=S?S.login:''}
 function checkPass(pass){var u=cfg.users[S.login];if(!u)return Promise.reject('Twoje konto nie istnieje w konfiguracji.');return unwrap(pass,u).catch(function(){throw 'Błędne aktualne hasło.'})}
@@ -252,6 +271,26 @@ action($('#fAdd'),function(f){var n=f.n.value.trim(),n1=f.n1.value,n2=f.n2.value
 action($('#fToken'),function(f){var t=f.t.value.trim();var r=repo();
   return gh('/repos/'+r.owner+'/'+r.name,{token:t}).then(function(res){if(!res.ok)throw res;return res.json()}).then(function(info){if(info.permissions&&info.permissions.push===false)throw {status:403};S.token=t;return seal(S.key,enc.encode(t))}).then(function(tok){cfg.token=tok;return saveCfg('Panel: nowy token')}).then(function(){return startSession(S.login,S.raw,t)}).then(function(){return 'Token zapisany.'})});
 
+
+/* ---------- terminarz ---------- */
+var EV_PATH='terminarz.json', events=[];
+function evWhen(e){return new Date(e.date+'T'+(e.time||'00:00'))}
+function evSort(){events.sort(function(a,b){return evWhen(a)-evWhen(b)})}
+function renderEv(){var ul=$('#evList');ul.innerHTML='';if(!events.length){ul.innerHTML='<li><span>Brak wydarzeń.</span></li>';return}
+  var now=new Date();events.forEach(function(e,i){var li=document.createElement('li'),d=document.createElement('span'),t=document.createElement('span'),b=document.createElement('button');
+    if(evWhen(e)<now)li.className='past';d.className='ed';d.textContent=e.date.split('-').reverse().join('.')+'  '+(e.time||'');t.className='et';t.textContent=e.title;
+    b.type='button';b.className='del';b.textContent='Usuń';b.addEventListener('click',function(){delEv(i,b)});li.appendChild(d);li.appendChild(t);li.appendChild(b);ul.appendChild(li)})}
+function loadEv(){return ghFile(EV_PATH,S&&S.token).then(function(f){if(f&&f.content)return JSON.parse(dec.decode(unb64(f.content)));throw 0})
+  .catch(function(){return fetch(EV_PATH+'?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():[]}).catch(function(){return[]})})
+  .then(function(j){events=Array.isArray(j)?j:(j&&j.events)||[];evSort();renderEv()})}
+function saveEv(message){evSort();var txt='[\n'+events.map(function(e){return'  '+JSON.stringify({date:e.date,time:e.time,title:e.title})}).join(',\n')+'\n]\n';return ghPut(EV_PATH,b64(enc.encode(txt)),message,S.token)}
+function delEv(i,btn){var e=events[i];if(!e)return;if(btn.dataset.c!=='1'){btn.dataset.c='1';btn.textContent='Na pewno?';setTimeout(function(){btn.dataset.c='';btn.textContent='Usuń'},4000);return}
+  btn.disabled=true;msg('');loadEv().then(function(){var k=-1;events.forEach(function(x,j){if(x.date===e.date&&x.time===e.time&&x.title===e.title)k=j});if(k<0)throw 'To wydarzenie zostało już usunięte.';events.splice(k,1);return saveEv('Terminarz: usunięto '+e.date)})
+  .then(function(){renderEv();msg('Usunięto wydarzenie z '+e.date.split('-').reverse().join('.')+'.')}).catch(function(err){msg(typeof err==='string'?err:ghErr(err),'bad');renderEv()})}
+$('#fEv').addEventListener('submit',function(e){e.preventDefault();var f=this,d=f.d.value,t=f.t.value,ti=f.ti.value.trim();msg('');
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||!/^\d{2}:\d{2}$/.test(t)||!ti)return msg('Uzupełnij datę, godzinę i tytuł.','bad');
+  busy(f,true);loadEv().then(function(){events.push({date:d,time:t,title:ti});return saveEv('Terminarz: '+d+' '+ti.slice(0,60))})
+  .then(function(){renderEv();f.ti.value='';f.d.value='';msg('Dodano wydarzenie '+d.split('-').reverse().join('.')+' o '+t+'.')}).catch(function(err){msg(typeof err==='string'?err:ghErr(err),'bad')}).then(function(){busy(f,false)})});
 $('#logout').addEventListener('click',function(){endSession();msg('Wylogowano.')});
 
 /* ---------- start ---------- */
