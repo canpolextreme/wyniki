@@ -1,0 +1,54 @@
+STRONA Z WYNIKAMI + PANEL ADMINA — publikacja za darmo (GitHub Pages)
+=====================================================================
+
+Co jest w paczce:
+  index.html          – strona z wynikami (link dla zawodników)
+  admin.html          – panel administratora
+  config.json         – konta adminów (hasła i token są zaszyfrowane)
+  wyniki/wyniki.xlsx  – plik z wynikami (podmieniany z panelu)
+  assets/             – logo i zdjęcie
+
+1. KONTO I REPOZYTORIUM
+   - Załóż darmowe konto na https://github.com
+   - Kliknij „+” (prawy górny róg) → „New repository”.
+     Nazwa: wyniki   •   zaznacz: Public   •   „Create repository”.
+   - Na stronie repozytorium kliknij „uploading an existing file”.
+   - Rozpakuj ZIP i przeciągnij CAŁĄ ZAWARTOŚĆ (pliki i foldery, nie sam folder nadrzędny).
+   - Na dole „Commit changes”.
+
+2. WŁĄCZENIE STRONY
+   - W repozytorium: Settings → Pages.
+   - Source: „Deploy from a branch”, Branch: main, folder: / (root) → Save.
+   - Po 1–2 minutach strona działa pod adresem:
+       https://TWOJ-LOGIN-GITHUB.github.io/wyniki/
+     To jest link dla zawodników (nie wymaga żadnego logowania).
+
+3. TOKEN DLA PANELU (żeby panel mógł zapisywać pliki)
+   - Kliknij swój awatar → Settings → Developer settings
+     → Personal access tokens → Fine-grained tokens → „Generate new token”.
+   - Token name: panel wyniki
+   - Expiration: najdłuższy dostępny okres (np. 1 rok).
+   - Repository access: „Only select repositories” → wybierz: wyniki
+   - Permissions → Repository permissions → Contents: „Read and write”.
+   - „Generate token” i skopiuj go (zaczyna się od github_pat_…). Pokazuje się tylko raz.
+
+4. PIERWSZE LOGOWANIE
+   - Wejdź na https://TWOJ-LOGIN-GITHUB.github.io/wyniki/admin.html
+   - Login: admin   Hasło: admin
+   - Sprawdź nazwę użytkownika GitHub i repozytorium (podpowiadają się same),
+     wklej token, ustaw nowe hasło (min. 8 znaków) → „Zapisz i połącz”.
+   - Od tej chwili admin/admin przestaje działać — logujesz się nowym hasłem.
+
+5. CODZIENNA OBSŁUGA (z komputera albo telefonu)
+   - admin.html → zaloguj → „Wgraj wyniki (Excel)” → wybierz plik .xlsx → „Wgraj na stronę”.
+   - Zawodnicy widzą nowe wyniki po ok. 1–2 minutach.
+   - W panelu: zmiana loginu, zmiana hasła, dodawanie kolejnych adminów.
+
+6. GDY TOKEN WYGAŚNIE
+   - Panel pokaże komunikat o tokenie. Wygeneruj nowy (punkt 3)
+     i wklej go w panelu w sekcji „Token GitHub” — działa dla wszystkich adminów.
+
+Bezpieczeństwo:
+   - Plik config.json jest publiczny, ale token i hasła są w nim zaszyfrowane
+     (bez hasła nie da się ich odczytać). Używaj mocnych haseł.
+   - Token ma dostęp tylko do tego jednego repozytorium.

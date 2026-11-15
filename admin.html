@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Panel administratora — Canpol Extreme</title>
+<meta name="theme-color" content="#eaf7fd">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0a1c28;--mut:#5d7384;--line:#d4e7f2;--ice:#eaf7fd;--mist:#f5fbfe;--sky:#9edcfb;--blue:#1aa6e8;--deep:#0b6fa6;--navy:#06304a;--ease:cubic-bezier(.22,1,.36,1);--f:'Manrope',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:linear-gradient(160deg,#fff 0%,var(--ice) 55%,var(--sky) 160%);min-height:100%}
+body{font-family:var(--f);color:var(--ink);min-height:100vh;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+[hidden]{display:none!important}
+.hd{width:min(1180px,92vw);margin:16px auto 0;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 12px 10px 24px;border-radius:999px;background:rgba(255,255,255,.72);backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);border:1px solid rgba(212,231,242,.9);box-shadow:0 10px 40px -20px rgba(6,48,74,.35)}
+.hd img{height:54px;width:auto;margin:-6px 0}
+.who{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--mut);letter-spacing:.06em}
+.who b{color:var(--navy)}
+.wrap{width:min(1040px,92vw);margin:0 auto;padding:56px 0 80px}
+.eyebrow{display:flex;align-items:center;gap:14px;font-size:12px;font-weight:700;letter-spacing:.32em;color:var(--blue);text-transform:uppercase}
+.eyebrow::before{content:"";width:34px;height:1px;background:var(--mut)}
+h1{font-weight:200;font-size:clamp(40px,7vw,72px);line-height:1.02;letter-spacing:-.02em;color:var(--navy);margin:18px 0 34px}
+h1 em{font-style:normal;color:var(--blue)}
+h2{font-weight:300;font-size:24px;color:var(--navy);margin-bottom:10px}
+p.sub{font-size:14px;color:var(--mut);margin-bottom:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px}
+.card{background:#fff;border:1px solid var(--line);border-radius:26px;padding:30px;box-shadow:0 30px 60px -40px rgba(6,48,74,.35)}
+.card.solo{max-width:460px}
+.card.wide{grid-column:1/-1}
+label{display:block;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--mut);margin:14px 0 6px}
+input{width:100%;font:500 16px var(--f);color:var(--ink);background:var(--mist);border:1px solid var(--line);border-radius:14px;padding:13px 16px;outline:none;transition:border-color .2s,box-shadow .2s}
+input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(26,166,232,.15)}
+.row3{display:grid;grid-template-columns:1fr 1fr 110px;gap:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:22px;width:100%;font:700 13px var(--f);letter-spacing:.18em;text-transform:uppercase;color:#fff;background:linear-gradient(120deg,var(--deep),var(--blue));border:0;border-radius:999px;padding:15px 22px;cursor:pointer;transition:transform .2s var(--ease),box-shadow .2s,opacity .2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 14px 30px -12px rgba(11,111,166,.6)}
+.btn[disabled]{opacity:.55;pointer-events:none}
+.btn.ghost{width:auto;margin:0;padding:10px 18px;background:#fff;color:var(--navy);border:1px solid var(--line)}
+.note{border-radius:16px;padding:14px 18px;margin-bottom:22px;font-size:14px;font-weight:600}
+.ok{background:#e6f8ef;color:#13704a;border:1px solid #bfe9d3}
+.bad{background:#fdecec;color:#a12828;border:1px solid #f5c9c9}
+.warn{background:#fff7e0;color:#7a5a00;border:1px solid #f1e0a8}
+.drop{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;margin-top:16px;padding:34px 20px;border:2px dashed var(--sky);border-radius:20px;background:var(--mist);cursor:pointer;transition:background .2s,border-color .2s}
+.drop:hover,.drop.over{background:var(--ice);border-color:var(--blue)}
+.drop b{font-size:17px;font-weight:600;color:var(--navy)}
+.drop span{font-size:13px;color:var(--mut)}
+.drop input{display:none}
+.list{margin-top:26px}
+.list li{list-style:none;display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line);font-size:15px}
+.list li span{color:var(--mut);font-size:13px}
+.links{display:flex;flex-wrap:wrap;gap:22px;margin-top:26px}
+.links a{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--deep)}
+small.h{display:block;font-size:12px;color:var(--mut);margin-top:6px}
+small.h a{color:var(--deep);text-decoration:underline}
+@media(max-width:600px){.hd{padding:8px 8px 8px 16px}.hd img{height:44px}.who span{display:none}.card{padding:24px}.row3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="hd">
+  <a href="index.html" aria-label="Wyniki zawodów"><img src="assets/extreme-logo.png" alt="Canpol Extreme" width="856" height="520"></a>
+  <div class="who" id="who" hidden><span>Zalogowany: <b id="whoName"></b></span><button class="btn ghost" id="logout" type="button">Wyloguj</button></div>
+</header>
+
+<main class="wrap">
+  <div class="eyebrow">Canpol Extreme / Panel</div>
+  <h1>Panel <em>administratora.</em></h1>
+  <div id="msg"></div>
+
+  <!-- LOGOWANIE -->
+  <form class="card solo" id="vLogin" hidden>
+    <h2>Logowanie</h2>
+    <label for="lL">Login</label><input id="lL" autocomplete="username" required>
+    <label for="lP">Hasło</label><input id="lP" type="password" autocomplete="current-password" required>
+    <button class="btn">Zaloguj</button>
+  </form>
+
+  <!-- PIERWSZA KONFIGURACJA -->
+  <form class="card" id="vSetup" hidden>
+    <h2>Pierwsze uruchomienie</h2>
+    <p class="sub">Połącz panel z repozytorium GitHub, w którym leży strona, i ustaw własne hasło. Domyślne „admin” jest jawne, więc trzeba je zmienić, zanim panel zacznie zapisywać zmiany.</p>
+    <div class="row3">
+      <div><label>Użytkownik GitHub</label><input id="sOwner" required></div>
+      <div><label>Repozytorium</label><input id="sRepo" required></div>
+      <div><label>Gałąź</label><input id="sBranch" value="main" required></div>
+    </div>
+    <label>Token GitHub</label><input id="sToken" type="password" autocomplete="off" placeholder="github_pat_…" required>
+    <small class="h">Token z uprawnieniem „Contents: Read and write” tylko do tego repozytorium — instrukcja w pliku INSTRUKCJA.txt.</small>
+    <div class="grid" style="gap:12px;margin-top:4px">
+      <div><label>Login</label><input id="sLogin" value="admin" required></div>
+      <div><label>Nowe hasło (min. 8 znaków)</label><input id="sP1" type="password" minlength="8" autocomplete="new-password" required></div>
+      <div><label>Powtórz hasło</label><input id="sP2" type="password" minlength="8" autocomplete="new-password" required></div>
+    </div>
+    <button class="btn">Zapisz i połącz</button>
+  </form>
+
+  <!-- PANEL -->
+  <div id="vPanel" hidden>
+    <div class="grid">
+      <div class="card wide">
+        <h2>Wgraj wyniki (Excel)</h2>
+        <p class="sub">Wybierz plik .xlsx z wynikami — zastąpi obecny na stronie. Zawodnicy zobaczą nowe wyniki po ok. 1–2 minutach.</p>
+        <label class="drop" id="drop"><input type="file" id="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"><b id="dropT">Kliknij lub przeciągnij plik .xlsx</b><span id="dropS">maks. 20 MB</span></label>
+        <button class="btn" id="upBtn" type="button" disabled>Wgraj na stronę</button>
+      </div>
+      <form class="card" id="fLogin">
+        <h2>Zmiana loginu</h2>
+        <label>Nowy login</label><input name="n" autocomplete="username" required>
+        <label>Aktualne hasło</label><input name="p" type="password" autocomplete="current-password" required>
+        <button class="btn">Zmień login</button>
+      </form>
+      <form class="card" id="fPass">
+        <h2>Zmiana hasła</h2>
+        <label>Aktualne hasło</label><input name="p" type="password" autocomplete="current-password" required>
+        <label>Nowe hasło</label><input name="n1" type="password" minlength="8" autocomplete="new-password" required>
+        <label>Powtórz nowe hasło</label><input name="n2" type="password" minlength="8" autocomplete="new-password" required>
+        <button class="btn">Zmień hasło</button>
+      </form>
+      <form class="card" id="fAdd">
+        <h2>Nowe konto admina</h2>
+        <label>Login</label><input name="n" autocomplete="off" required>
+        <label>Hasło</label><input name="n1" type="password" minlength="8" autocomplete="new-password" required>
+        <label>Powtórz hasło</label><input name="n2" type="password" minlength="8" autocomplete="new-password" required>
+        <button class="btn">Dodaj admina</button>
+        <ul class="list" id="users"></ul>
+      </form>
+      <form class="card" id="fToken">
+        <h2>Token GitHub</h2>
+        <p class="sub">Gdy token wygaśnie, wklej tu nowy — działa dla wszystkich adminów.</p>
+        <label>Nowy token</label><input name="t" type="password" autocomplete="off" placeholder="github_pat_…" required>
+        <button class="btn">Zapisz token</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="links"><a href="index.html">← Wyniki zawodów</a></div>
+</main>
+
+<script>
+(function(){
+'use strict';
+var $=function(s){return document.querySelector(s)};
+function store(){try{return window.sessionStorage}catch(e){return null}}
+function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+var API=lsGet('cx_api')||'https://api.github.com';   // cx_api tylko do testów
+var CFG_PATH='config.json', XLSX_PATH='wyniki/wyniki.xlsx', ITER=310000;
+var cfg=null, S=null; // S = {login, token, key(CryptoKey), raw(Uint8Array)}
+
+/* ---------- pomocnicze ---------- */
+var enc=new TextEncoder(), dec=new TextDecoder();
+function b64(u8){var s='',c=0x8000;for(var i=0;i<u8.length;i+=c)s+=String.fromCharCode.apply(null,u8.subarray(i,i+c));return btoa(s)}
+function unb64(s){var b=atob(String(s).replace(/\s/g,'')),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u}
+function rnd(n){return crypto.getRandomValues(new Uint8Array(n))}
+function msg(t,kind){var m=$('#msg');m.innerHTML='';if(!t)return;var d=document.createElement('div');d.className='note '+(kind||'ok');d.textContent=t;m.appendChild(d);m.scrollIntoView({block:'nearest',behavior:'smooth'})}
+function show(v){['#vLogin','#vSetup','#vPanel'].forEach(function(id){$(id).hidden=(id!==v)});$('#who').hidden=(v!=='#vPanel');if(S)$('#whoName').textContent=S.login}
+function validLogin(l){return /^[A-Za-z0-9._\-@]{3,40}$/.test(l)}
+function busy(form,on){var b=form.querySelector('.btn');if(b)b.disabled=on}
+
+/* ---------- kryptografia: token szyfrowany kluczem K, K owinięty hasłem każdego admina ---------- */
+function pwKey(pass,salt){return crypto.subtle.importKey('raw',enc.encode(pass),'PBKDF2',false,['deriveKey']).then(function(k){return crypto.subtle.deriveKey({name:'PBKDF2',salt:salt,iterations:ITER,hash:'SHA-256'},k,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])})}
+function aesKey(raw){return crypto.subtle.importKey('raw',raw,'AES-GCM',false,['encrypt','decrypt'])}
+function seal(key,data){var iv=rnd(12);return crypto.subtle.encrypt({name:'AES-GCM',iv:iv},key,data).then(function(ct){return{iv:b64(iv),ct:b64(new Uint8Array(ct))}})}
+function open_(key,box){return crypto.subtle.decrypt({name:'AES-GCM',iv:unb64(box.iv)},key,unb64(box.ct)).then(function(p){return new Uint8Array(p)})}
+function wrapFor(pass,raw){var salt=rnd(16);return pwKey(pass,salt).then(function(k){return seal(k,raw)}).then(function(box){box.salt=b64(salt);return box})}
+function unwrap(pass,u){return pwKey(pass,unb64(u.salt)).then(function(k){return open_(k,u)})}
+
+/* ---------- GitHub ---------- */
+function repo(){return cfg.repo}
+function gh(path,opt){opt=opt||{};var h={'Accept':'application/vnd.github+json'};if(opt.token)h.Authorization='Bearer '+opt.token;if(opt.body)h['Content-Type']='application/json';
+  return fetch(API+path,{method:opt.method||'GET',headers:h,body:opt.body?JSON.stringify(opt.body):undefined,cache:'no-store'})}
+function ghFile(p,token){var r=repo();return gh('/repos/'+r.owner+'/'+r.name+'/contents/'+p+'?ref='+encodeURIComponent(r.branch)+'&t='+Date.now(),{token:token}).then(function(res){if(res.status===404)return null;if(!res.ok)throw res;return res.json()})}
+function ghPut(p,contentB64,message,token){
+  return ghFile(p,token).then(function(cur){var r=repo(),body={message:message,content:contentB64,branch:r.branch};if(cur&&cur.sha)body.sha=cur.sha;
+    return gh('/repos/'+r.owner+'/'+r.name+'/contents/'+p,{method:'PUT',token:token,body:body})}).then(function(res){if(!res.ok)throw res;return res.json()})}
+function ghErr(e){var st=e&&e.status;if(st===401)return 'Token GitHub jest nieprawidłowy lub wygasł — wklej nowy w sekcji „Token GitHub”.';if(st===403)return 'Token nie ma uprawnień do zapisu w tym repozytorium.';if(st===404)return 'Nie znaleziono repozytorium — sprawdź nazwę użytkownika i repozytorium.';if(st===409||st===422)return 'Plik zmienił się w międzyczasie — spróbuj jeszcze raz.';return 'Nie udało się połączyć z GitHub. Sprawdź internet i spróbuj ponownie.'}
+
+/* ---------- konfiguracja ---------- */
+function guessRepo(){var h=location.hostname,o='',n='';if(/\.github\.io$/i.test(h)){o=h.split('.')[0];var seg=location.pathname.split('/').filter(Boolean)[0];n=(seg&&!/\.html?$/i.test(seg))?seg:h}return{owner:o,name:n,branch:'main'}}
+function loadCfg(token){
+  return fetch(CFG_PATH+'?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).catch(function(){return null}).then(function(local){
+    var c=local||{repo:guessRepo(),users:{}};if(!c.repo||!c.repo.owner)c.repo=Object.assign(guessRepo(),c.repo&&c.repo.owner?c.repo:{});if(!c.users)c.users={};cfg=c;
+    if(!cfg.repo.owner||!cfg.repo.name)return cfg;
+    // świeższa wersja prosto z repozytorium (strona może się jeszcze przebudowywać)
+    return ghFile(CFG_PATH,token).then(function(f){if(f&&f.content){var fresh=JSON.parse(dec.decode(unb64(f.content)));if(fresh&&fresh.users){cfg=fresh;if(!cfg.repo||!cfg.repo.owner)cfg.repo=c.repo}}return cfg}).catch(function(){return cfg})});
+}
+function saveCfg(message){var txt=JSON.stringify(cfg,null,2)+'\n';return ghPut(CFG_PATH,b64(enc.encode(txt)),message,S.token)}
+
+/* ---------- sesja ---------- */
+function startSession(login,raw,token){return aesKey(raw).then(function(k){S={login:login,raw:raw,key:k,token:token};var st=store();if(st)st.setItem('cx_s',JSON.stringify({l:login,r:b64(raw),t:token}));renderUsers();show('#vPanel')})}
+function endSession(){S=null;var st=store();if(st)st.removeItem('cx_s');$('#lP').value='';show('#vLogin')}
+function renderUsers(){var ul=$('#users');ul.innerHTML='';Object.keys(cfg.users).sort().forEach(function(n){var li=document.createElement('li'),b=document.createElement('b'),sp=document.createElement('span');b.textContent=n;sp.textContent=(S&&n===S.login)?'Ty':'admin';li.appendChild(b);li.appendChild(sp);ul.appendChild(li)});$('#fLogin').n.value=S?S.login:''}
+function checkPass(pass){var u=cfg.users[S.login];if(!u)return Promise.reject('Twoje konto nie istnieje w konfiguracji.');return unwrap(pass,u).catch(function(){throw 'Błędne aktualne hasło.'})}
+function refresh(){return loadCfg(S.token)}
+
+/* ---------- logowanie ---------- */
+$('#vLogin').addEventListener('submit',function(e){e.preventDefault();var f=this,l=$('#lL').value.trim(),p=$('#lP').value;busy(f,true);msg('');
+  loadCfg().then(function(){
+    if(!Object.keys(cfg.users).length){
+      if(l==='admin'&&p==='admin'){var r=cfg.repo;$('#sOwner').value=r.owner||'';$('#sRepo').value=r.name||'';$('#sBranch').value=r.branch||'main';show('#vSetup');return}
+      throw 'Nieprawidłowy login lub hasło.'}
+    var u=cfg.users[l];if(!u)return new Promise(function(_,rej){setTimeout(function(){rej('Nieprawidłowy login lub hasło.')},700)});
+    return unwrap(p,u).catch(function(){throw 'Nieprawidłowy login lub hasło.'}).then(function(raw){return aesKey(raw).then(function(k){return open_(k,cfg.token)}).then(function(t){return startSession(l,raw,dec.decode(t))})});
+  }).catch(function(err){msg(typeof err==='string'?err:'Nie udało się zalogować.','bad')}).then(function(){busy(f,false)})});
+
+/* ---------- pierwsza konfiguracja ---------- */
+$('#vSetup').addEventListener('submit',function(e){e.preventDefault();var f=this;msg('');
+  var o=$('#sOwner').value.trim(),n=$('#sRepo').value.trim(),br=$('#sBranch').value.trim()||'main',t=$('#sToken').value.trim(),l=$('#sLogin').value.trim(),p1=$('#sP1').value,p2=$('#sP2').value;
+  if(!validLogin(l))return msg('Login: 3–40 znaków (litery, cyfry, . _ - @).','bad');
+  if(p1.length<8)return msg('Hasło musi mieć co najmniej 8 znaków.','bad');
+  if(p1==='admin'||p1===l)return msg('Ustaw inne hasło niż domyślne.','bad');
+  if(p1!==p2)return msg('Hasła nie są takie same.','bad');
+  busy(f,true);cfg.repo={owner:o,name:n,branch:br};
+  gh('/repos/'+o+'/'+n,{token:t}).then(function(r){if(!r.ok)throw r;return r.json()}).then(function(info){if(info.permissions&&info.permissions.push===false)throw {status:403}
+    var raw=rnd(32);return aesKey(raw).then(function(k){return seal(k,enc.encode(t))}).then(function(tok){cfg.token=tok;return wrapFor(p1,raw)}).then(function(box){cfg.users={};cfg.users[l]=box;S={login:l,token:t};return saveCfg('Panel: pierwsza konfiguracja')}).then(function(){return startSession(l,raw,t)})})
+  .then(function(){msg('Gotowe — panel połączony z GitHub. Zaloguj się odtąd loginem „'+l+'” i nowym hasłem.')})
+  .catch(function(err){S=null;msg(typeof err==='string'?err:ghErr(err),'bad')}).then(function(){busy(f,false)})});
+
+/* ---------- wgrywanie Excela ---------- */
+var picked=null;
+function pick(file){picked=null;$('#upBtn').disabled=true;if(!file)return;
+  if(!/\.xlsx$/i.test(file.name)){msg('To nie jest plik .xlsx.','bad');return}
+  if(file.size>20*1024*1024){msg('Plik jest za duży (maks. 20 MB).','bad');return}
+  file.arrayBuffer().then(function(buf){var u=new Uint8Array(buf);if(u[0]!==0x50||u[1]!==0x4B){msg('Plik nie wygląda na poprawny Excel (.xlsx).','bad');return}
+    picked=u;$('#dropT').textContent=file.name;$('#dropS').textContent=(file.size/1024).toFixed(0)+' KB — gotowy do wgrania';$('#upBtn').disabled=false;msg('')})}
+$('#file').addEventListener('change',function(){pick(this.files[0])});
+var drop=$('#drop');['dragenter','dragover'].forEach(function(t){drop.addEventListener(t,function(e){e.preventDefault();drop.classList.add('over')})});
+['dragleave','drop'].forEach(function(t){drop.addEventListener(t,function(e){e.preventDefault();drop.classList.remove('over')})});
+drop.addEventListener('drop',function(e){var f=e.dataTransfer&&e.dataTransfer.files[0];if(f)pick(f)});
+$('#upBtn').addEventListener('click',function(){if(!picked)return;var b=this;b.disabled=true;b.textContent='Wgrywam…';
+  ghPut(XLSX_PATH,b64(picked),'Wyniki: nowy plik ('+S.login+')',S.token).then(function(){msg('Wyniki wgrane. Strona pokaże je w ciągu ok. 1–2 minut.');picked=null;$('#file').value='';$('#dropT').textContent='Kliknij lub przeciągnij plik .xlsx';$('#dropS').textContent='maks. 20 MB'})
+  .catch(function(e){msg(ghErr(e),'bad');b.disabled=false}).then(function(){b.textContent='Wgraj na stronę'})});
+
+/* ---------- konto ---------- */
+function action(form,fn){form.addEventListener('submit',function(e){e.preventDefault();msg('');busy(form,true);refresh().then(function(){return fn(form)}).then(function(t){if(t)msg(t);form.reset();renderUsers()}).catch(function(err){msg(typeof err==='string'?err:ghErr(err),'bad')}).then(function(){busy(form,false)})})}
+action($('#fLogin'),function(f){var n=f.n.value.trim();
+  if(!validLogin(n))throw 'Login: 3–40 znaków (litery, cyfry, . _ - @).';
+  if(n===S.login)throw 'To jest Twój obecny login.';
+  if(cfg.users[n])throw 'Taki login już istnieje.';
+  return checkPass(f.p.value).then(function(){var old=S.login;cfg.users[n]=cfg.users[old];delete cfg.users[old];return saveCfg('Panel: zmiana loginu').then(function(){return startSession(n,S.raw,S.token)}).then(function(){return 'Login zmieniony na „'+n+'”.'})})});
+action($('#fPass'),function(f){var n1=f.n1.value,n2=f.n2.value;
+  if(n1.length<8)throw 'Nowe hasło musi mieć co najmniej 8 znaków.';
+  if(n1!==n2)throw 'Nowe hasła nie są takie same.';
+  return checkPass(f.p.value).then(function(){return wrapFor(n1,S.raw)}).then(function(box){cfg.users[S.login]=box;return saveCfg('Panel: zmiana hasła')}).then(function(){return 'Hasło zmienione.'})});
+action($('#fAdd'),function(f){var n=f.n.value.trim(),n1=f.n1.value,n2=f.n2.value;
+  if(!validLogin(n))throw 'Login: 3–40 znaków (litery, cyfry, . _ - @).';
+  if(cfg.users[n])throw 'Taki login już istnieje.';
+  if(n1.length<8)throw 'Hasło musi mieć co najmniej 8 znaków.';
+  if(n1!==n2)throw 'Hasła nie są takie same.';
+  return wrapFor(n1,S.raw).then(function(box){cfg.users[n]=box;return saveCfg('Panel: nowy admin '+n)}).then(function(){return 'Dodano konto admina „'+n+'”.'})});
+action($('#fToken'),function(f){var t=f.t.value.trim();var r=repo();
+  return gh('/repos/'+r.owner+'/'+r.name,{token:t}).then(function(res){if(!res.ok)throw res;return res.json()}).then(function(info){if(info.permissions&&info.permissions.push===false)throw {status:403};S.token=t;return seal(S.key,enc.encode(t))}).then(function(tok){cfg.token=tok;return saveCfg('Panel: nowy token')}).then(function(){return startSession(S.login,S.raw,t)}).then(function(){return 'Token zapisany.'})});
+
+$('#logout').addEventListener('click',function(){endSession();msg('Wylogowano.')});
+
+/* ---------- start ---------- */
+var st=store(),saved=null;try{saved=st&&JSON.parse(st.getItem('cx_s')||'null')}catch(e){}
+loadCfg(saved&&saved.t).then(function(){if(saved&&cfg.users[saved.l])return startSession(saved.l,unb64(saved.r),saved.t);show('#vLogin')}).catch(function(){show('#vLogin')});
+})();
+</script>
+</body>
+</html>
