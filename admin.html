@@ -68,7 +68,24 @@ small.h a{color:var(--deep);text-decoration:underline}
 .dev button{font:700 11px var(--f);letter-spacing:.12em;text-transform:uppercase;padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--navy);cursor:pointer}
 .dev button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
 .pvwrap{border:1px solid var(--line);border-radius:20px;overflow:hidden;background:var(--mist);display:flex;justify-content:center}
-#pv{width:100%;height:640px;border:0;background:#fff;transition:width .3s}
+.pvwrap iframe{width:100%;height:640px;border:0;background:#fff;transition:width .3s}
+.h3{font-weight:300;font-size:20px;color:var(--navy);margin:28px 0 4px}
+.dvn{max-width:200px}
+.dvl{display:grid;gap:10px;margin-top:14px}
+.dvr{display:grid;grid-template-columns:34px 1fr 230px;gap:10px;align-items:center}
+.dvr .nr{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--ice);color:var(--deep);font-weight:800;font-size:13px}
+.dvr .blk{font-size:11px;color:var(--mut);margin-top:3px}
+.sw{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--mist)}
+.sw button{font:700 12px var(--f);letter-spacing:.06em;padding:13px 8px;border:0;background:none;color:var(--mut);cursor:pointer}
+.sw button.on{background:var(--navy);color:#fff}
+.bzl{display:grid;gap:10px;margin-top:10px}
+.bzl:empty::before{content:"Brak baraży — dodaj pierwszą parę.";font-size:13px;color:var(--mut)}
+.bzr{display:grid;grid-template-columns:120px 1fr auto 1fr 150px auto;gap:8px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:16px;background:var(--mist)}
+.bzr input,.bzr select{background:#fff}
+.bzr .vs2{font-size:11px;font-weight:800;letter-spacing:.16em;color:var(--deep)}
+select{width:100%;font:500 15px var(--f);color:var(--ink);background:var(--mist);border:1px solid var(--line);border-radius:14px;padding:12px 12px;outline:none}
+.btn.addb{margin-top:12px}
+@media(max-width:760px){.dvr{grid-template-columns:34px 1fr}.dvr .sw{grid-column:2}.bzr{grid-template-columns:1fr auto}.bzr .lb,.bzr .pa,.bzr .pb,.bzr .vs2{grid-column:1/-1}.bzr .vs2{text-align:center}}
 .evf{display:grid;grid-template-columns:180px 150px 1fr;gap:12px}
 .evl li{align-items:center}
 .evl .ed{min-width:130px;font-weight:700;color:var(--navy)}
@@ -123,7 +140,11 @@ small.h a{color:var(--deep);text-decoration:underline}
     <div class="grid">
       <div class="card wide">
         <h2>Wgraj wyniki (Excel)</h2>
-        <p class="sub">Wybierz plik .xlsx z wynikami — zastąpi obecny na stronie. Zawodnicy zobaczą nowe wyniki po ok. 1–2 minutach.</p>
+        <p class="sub">Wybierz, który plik wgrywasz — zastąpi obecny na stronie. Zawodnicy zobaczą nowe wyniki po ok. 1–2 minutach.</p>
+        <div class="seg" id="upKind" role="radiogroup">
+          <label><input type="radio" name="kind" value="gen" checked><span><b>Klasyfikacja generalna</b><small>plik wyniki.xlsx</small></span></label>
+          <label><input type="radio" name="kind" value="div"><span><b>Dywizje</b><small>plik dywizje.xlsx</small></span></label>
+        </div>
         <label class="drop" id="drop"><input type="file" id="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"><b id="dropT">Kliknij lub przeciągnij plik .xlsx</b><span id="dropS">maks. 20 MB</span></label>
         <button class="btn" id="upBtn" type="button" disabled>Wgraj na stronę</button>
       </div>
@@ -137,6 +158,19 @@ small.h a{color:var(--deep);text-decoration:underline}
         <div class="pvbar"><span id="pvInfo">Podgląd: wyniki ze strony</span><span class="dev"><button type="button" data-w="100%" class="on">Komputer</button><button type="button" data-w="390px">Telefon</button></span></div>
         <div class="pvwrap"><iframe id="pv" title="Podgląd strony z wynikami" loading="lazy"></iframe></div>
         <button class="btn" id="sortBtn">Zapisz ustawienie</button>
+      </form>
+      <form class="card wide" id="fDiv">
+        <h2>Dywizje i baraże</h2>
+        <p class="sub">Ustaw, ile dywizji pokazywać, jak się nazywają i czy liczą Total czy Total −1 (dywizje są brane z pliku Excel po kolei, od góry). Niżej dodasz pary barażowe. Podgląd zmienia się na bieżąco.</p>
+        <div class="dvn"><label for="dvCount">Liczba dywizji</label><input id="dvCount" type="number" min="1" max="12" value="4"></div>
+        <div class="dvl" id="dvList"></div>
+        <h3 class="h3">Baraże</h3>
+        <div class="bzl" id="bzList"></div>
+        <button type="button" class="btn ghost addb" id="bzAdd">+ Dodaj baraż</button>
+        <datalist id="dvNames"></datalist>
+        <div class="pvbar"><span id="pvdInfo">Podgląd: dywizje ze strony</span><span class="dev"><button type="button" data-w="100%" class="on">Komputer</button><button type="button" data-w="390px">Telefon</button></span></div>
+        <div class="pvwrap"><iframe id="pvd" title="Podgląd dywizji" loading="lazy"></iframe></div>
+        <button class="btn" id="divBtn">Zapisz dywizje i baraże</button>
       </form>
       <form class="card wide" id="fEv">
         <h2>Terminarz</h2>
@@ -263,17 +297,21 @@ $('#vSetup').addEventListener('submit',function(e){e.preventDefault();var f=this
 
 /* ---------- wgrywanie Excela ---------- */
 var picked=null;
-function pick(file){picked=null;$('#upBtn').disabled=true;if(!file)return;if(pvBuf){pvBuf=null;$('#pvInfo').textContent='Podgląd: wyniki ze strony';pvLoad()}
+function selKind(){var r=document.querySelector('#upKind input:checked');return r?r.value:'gen'}
+function resetPick(){picked=null;$('#upBtn').disabled=true;$('#file').value='';$('#dropT').textContent='Kliknij lub przeciągnij plik .xlsx';$('#dropS').textContent='maks. 20 MB';
+  if(pvBuf){pvBuf=null;$('#pvInfo').textContent='Podgląd: wyniki ze strony';pvLoad()}if(pvdBuf){pvdBuf=null;$('#pvdInfo').textContent='Podgląd: dywizje ze strony';pvdLoad()}}
+[].forEach.call(document.querySelectorAll('#upKind input'),function(r){r.addEventListener('change',resetPick)});
+function pick(file){picked=null;$('#upBtn').disabled=true;if(!file)return;if(pvBuf||pvdBuf){var keep=file;resetPick();file=keep}var kind=selKind();
   if(!/\.xlsx$/i.test(file.name)){msg('To nie jest plik .xlsx.','bad');return}
   if(file.size>20*1024*1024){msg('Plik jest za duży (maks. 20 MB).','bad');return}
   file.arrayBuffer().then(function(buf){var u=new Uint8Array(buf);if(u[0]!==0x50||u[1]!==0x4B){msg('Plik nie wygląda na poprawny Excel (.xlsx).','bad');return}
-    picked=u;pvBuf=buf;$('#pvInfo').textContent='Podgląd: wybrany plik '+file.name+' (jeszcze nie wgrany)';pvSend();$('#dropT').textContent=file.name;$('#dropS').textContent=(file.size/1024).toFixed(0)+' KB — gotowy do wgrania';$('#upBtn').disabled=false;msg('')})}
+    picked=u;if(kind==='div'){pvdBuf=buf;$('#pvdInfo').textContent='Podgląd: wybrany plik '+file.name+' (jeszcze nie wgrany)';pvdSend();msg('Podgląd dywizji z wybranego pliku jest w sekcji „Dywizje” poniżej.')}else{pvBuf=buf;$('#pvInfo').textContent='Podgląd: wybrany plik '+file.name+' (jeszcze nie wgrany)';pvSend()}$('#dropT').textContent=file.name;$('#dropS').textContent=(file.size/1024).toFixed(0)+' KB — gotowy do wgrania';$('#upBtn').disabled=false;if(kind!=='div')msg('')})}
 $('#file').addEventListener('change',function(){pick(this.files[0])});
 var drop=$('#drop');['dragenter','dragover'].forEach(function(t){drop.addEventListener(t,function(e){e.preventDefault();drop.classList.add('over')})});
 ['dragleave','drop'].forEach(function(t){drop.addEventListener(t,function(e){e.preventDefault();drop.classList.remove('over')})});
 drop.addEventListener('drop',function(e){var f=e.dataTransfer&&e.dataTransfer.files[0];if(f)pick(f)});
 $('#upBtn').addEventListener('click',function(){if(!picked)return;var b=this;b.disabled=true;b.textContent='Wgrywam…';
-  ghPut(XLSX_PATH,b64(picked),'Wyniki: nowy plik ('+S.login+')',S.token).then(function(){msg('Wyniki wgrane. Strona pokaże je w ciągu ok. 1–2 minut.');picked=null;$('#file').value='';$('#dropT').textContent='Kliknij lub przeciągnij plik .xlsx';$('#dropS').textContent='maks. 20 MB'})
+  var kind=selKind();ghPut(kind==='div'?DIV_PATH:XLSX_PATH,b64(picked),(kind==='div'?'Dywizje':'Wyniki')+': nowy plik ('+S.login+')',S.token).then(function(){msg((kind==='div'?'Plik dywizji wgrany':'Wyniki wgrane')+'. Strona pokaże je w ciągu ok. 1–2 minut.');picked=null;$('#file').value='';$('#dropT').textContent='Kliknij lub przeciągnij plik .xlsx';$('#dropS').textContent='maks. 20 MB'})
   .catch(function(e){msg(ghErr(e),'bad');b.disabled=false}).then(function(){b.textContent='Wgraj na stronę'})});
 
 /* ---------- konto ---------- */
@@ -305,12 +343,49 @@ function pvSend(){var f=$('#pv');if(!pvReady||!f.contentWindow)return;var m={typ
 function pvLoad(){var f=$('#pv');pvReady=false;f.onload=function(){pvReady=true;setTimeout(pvSend,300)};f.src='index.html?preview=1&sort='+selSort()+'&t='+Date.now()}
 function loadSet(){return ghFile(SET_PATH,S&&S.token).then(function(f){if(f&&f.content)return JSON.parse(dec.decode(unb64(f.content)));throw 0})
   .catch(function(){return fetch(SET_PATH+'?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():{}}).catch(function(){return{}})})
-  .then(function(j){curSort=j&&j.sort==='t4'?'t4':'total';setRadio(curSort);pvLoad()})}
+  .then(function(j){SETTINGS=j||{};curSort=SETTINGS.sort==='t4'?'t4':'total';setRadio(curSort);pvLoad();divFromSettings();pvdLoad()})}
 [].forEach.call(document.querySelectorAll('#fSort input[name=sort]'),function(r){r.addEventListener('change',pvSend)});
-[].forEach.call(document.querySelectorAll('.dev button'),function(b){b.addEventListener('click',function(){[].forEach.call(document.querySelectorAll('.dev button'),function(x){x.classList.toggle('on',x===b)});$('#pv').style.width=b.dataset.w})});
+[].forEach.call(document.querySelectorAll('.dev button'),function(b){b.addEventListener('click',function(){var c=b.closest('.card');[].forEach.call(c.querySelectorAll('.dev button'),function(x){x.classList.toggle('on',x===b)});c.querySelector('iframe').style.width=b.dataset.w})});
 $('#fSort').addEventListener('submit',function(e){e.preventDefault();var f=this,v=selSort();msg('');busy(f,true);
-  ghPut(SET_PATH,b64(enc.encode(JSON.stringify({sort:v},null,2)+'\n')),'Ustawienia: kolejność wg '+(v==='t4'?'Total -4':'sumy'),S.token)
+  saveSet({sort:v},'Ustawienia: kolejność wg '+(v==='t4'?'Total -4':'sumy'))
   .then(function(){curSort=v;msg('Zapisano: kolejność według '+(v==='t4'?'Total −4':'sumy (Total)')+'. Strona zmieni się w ciągu ok. 1–2 minut.')}).catch(function(err){msg(ghErr(err),'bad')}).then(function(){busy(f,false)})});
+
+/* ---------- dywizje + baraże ---------- */
+var DIV_PATH='wyniki/dywizje.xlsx', SETTINGS={}, DS={divs:[],bar:[]}, BLOCKS=[], pvdBuf=null, pvdReady=false, pvdTab=0, pvdT=null;
+function saveSet(patch,message){return ghFile(SET_PATH,S.token).then(function(f){var cur={};try{if(f&&f.content)cur=JSON.parse(dec.decode(unb64(f.content)))}catch(e){}
+  Object.keys(patch).forEach(function(k){cur[k]=patch[k]});SETTINGS=cur;return ghPut(SET_PATH,b64(enc.encode(JSON.stringify(cur,null,2)+'\n')),message,S.token)})}
+function defName(i){return BLOCKS[i]||('Dywizja '+String.fromCharCode(65+i))}
+function divFromSettings(){var d=SETTINGS.divisions||[],b=SETTINGS.baraze||[];
+  DS.divs=d.map(function(x,i){return{name:x.name||defName(i),sort:x.sort==='t1'?'t1':'total'}});
+  DS.bar=b.map(function(x){return{label:x.label||'',a:x.a||'',b:x.b||'',win:x.win===1||x.win===2?x.win:0}});
+  if(!DS.divs.length)setCount(BLOCKS.length||4);else{$('#dvCount').value=DS.divs.length;renderDiv()}renderBar()}
+function setCount(n){n=Math.max(1,Math.min(12,n|0||1));while(DS.divs.length<n)DS.divs.push({name:defName(DS.divs.length),sort:'total'});DS.divs.length=n;$('#dvCount').value=n;renderDiv()}
+function renderDiv(){var L=$('#dvList');L.innerHTML='';DS.divs.forEach(function(d,i){var r=document.createElement('div');r.className='dvr';
+  r.innerHTML='<span class="nr"></span><div><input class="dn" maxlength="40" aria-label="Nazwa dywizji"><div class="blk"></div></div><div class="sw" role="radiogroup" aria-label="Liczenie"><button type="button" data-v="total">Total</button><button type="button" data-v="t1">Total −1</button></div>';
+  r.querySelector('.nr').textContent=i+1;var inp=r.querySelector('.dn');inp.value=d.name;r.querySelector('.blk').textContent=BLOCKS[i]?'Z Excela: '+BLOCKS[i]:(BLOCKS.length?'Brak takiej tabeli w pliku — będzie pusta':'');
+  inp.addEventListener('input',function(){d.name=inp.value;pvdTab=i;pvdQueue()});inp.addEventListener('focus',function(){if(pvdTab!==i){pvdTab=i;pvdQueue()}});
+  [].forEach.call(r.querySelectorAll('.sw button'),function(b){b.classList.toggle('on',b.dataset.v===d.sort);b.addEventListener('click',function(){d.sort=b.dataset.v;pvdTab=i;[].forEach.call(r.querySelectorAll('.sw button'),function(x){x.classList.toggle('on',x===b)});pvdQueue()})});
+  L.appendChild(r)});pvdQueue()}
+function renderBar(){var L=$('#bzList');L.innerHTML='';DS.bar.forEach(function(x,i){var r=document.createElement('div');r.className='bzr';
+  r.innerHTML='<input class="lb" placeholder="Opis, np. A ↔ B" maxlength="30"><input class="pa" list="dvNames" placeholder="Zawodnik 1" maxlength="60"><span class="vs2">VS</span><input class="pb" list="dvNames" placeholder="Zawodnik 2" maxlength="60"><select class="wn" aria-label="Zwycięzca"><option value="0">Zwycięzca: brak</option><option value="1">Zwycięzca: 1.</option><option value="2">Zwycięzca: 2.</option></select><button type="button" class="del">Usuń</button>';
+  var lb=r.querySelector('.lb'),pa=r.querySelector('.pa'),pb=r.querySelector('.pb'),wn=r.querySelector('.wn');lb.value=x.label;pa.value=x.a;pb.value=x.b;wn.value=String(x.win);
+  lb.addEventListener('input',function(){x.label=lb.value;pvdQueue()});pa.addEventListener('input',function(){x.a=pa.value;pvdQueue()});pb.addEventListener('input',function(){x.b=pb.value;pvdQueue()});wn.addEventListener('change',function(){x.win=+wn.value;pvdQueue()});
+  r.querySelector('.del').addEventListener('click',function(){DS.bar.splice(i,1);renderBar();pvdQueue()});L.appendChild(r)})}
+$('#dvCount').addEventListener('input',function(){if(this.value!=='')setCount(+this.value)});
+$('#bzAdd').addEventListener('click',function(){DS.bar.push({label:'',a:'',b:'',win:0});renderBar();var r=$('#bzList').lastElementChild;if(r)r.querySelector('.pa').focus()});
+function dcfg(){return{divisions:DS.divs.map(function(d){return{name:d.name.trim(),sort:d.sort}}),baraze:DS.bar.filter(function(b){return b.a.trim()||b.b.trim()}).map(function(b){return{label:b.label.trim(),a:b.a.trim(),b:b.b.trim(),win:b.win}})}}
+function pvdSend(){var f=$('#pvd');if(!pvdReady||!f.contentWindow)return;var m={type:'cx-preview',dcfg:dcfg(),cat:'div',dtab:pvdTab};if(pvdBuf)m.dbuf=pvdBuf.slice(0);f.contentWindow.postMessage(m,location.origin)}
+function pvdQueue(){clearTimeout(pvdT);pvdT=setTimeout(pvdSend,250)}
+function pvdLoad(){var f=$('#pvd');pvdReady=false;f.onload=function(){pvdReady=true;setTimeout(pvdSend,400)};f.src='index.html?preview=1&t='+Date.now()+'#dywizje'}
+addEventListener('message',function(e){var m=e.data;if(e.origin!==location.origin||!m||m.type!=='cx-names')return;
+  var dl=$('#dvNames');dl.innerHTML='';(m.names||[]).forEach(function(n){var o=document.createElement('option');o.value=n;dl.appendChild(o)});
+  var nb=m.blocks||[],changed=nb.join('|')!==BLOCKS.join('|');BLOCKS=nb;
+  if(changed){if(!(SETTINGS.divisions||[]).length&&!DS.touched){DS.divs=[];setCount(BLOCKS.length||4)}else renderDiv()}});
+$('#fDiv').addEventListener('input',function(){DS.touched=true});
+$('#fDiv').addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.tagName==='INPUT')e.preventDefault()});
+$('#fDiv').addEventListener('submit',function(e){e.preventDefault();var f=this,c=dcfg();msg('');
+  if(c.divisions.some(function(d){return!d.name}))return msg('Każda dywizja musi mieć nazwę.','bad');
+  busy(f,true);saveSet(c,'Ustawienia: dywizje i baraże').then(function(){msg('Zapisano dywizje ('+c.divisions.length+') i baraże ('+c.baraze.length+'). Strona zmieni się w ciągu ok. 1–2 minut.')}).catch(function(err){msg(ghErr(err),'bad')}).then(function(){busy(f,false)})});
 
 /* ---------- terminarz ---------- */
 var EV_PATH='terminarz.json', events=[];
