@@ -1,0 +1,22 @@
+{
+  "sort": "total",
+  "divisions": [
+    {
+      "name": "Dywizja A",
+      "sort": "total"
+    },
+    {
+      "name": "Dywizja B",
+      "sort": "total"
+    },
+    {
+      "name": "Dywizja C",
+      "sort": "total"
+    },
+    {
+      "name": "Dywizja D",
+      "sort": "total"
+    }
+  ],
+  "baraze": []
+}
