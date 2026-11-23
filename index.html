@@ -620,7 +620,7 @@ function parseDiv(sheets){var out=[];sheets.forEach(function(sh){var rows=sh.row
     var ev=buildEv(rows,sh.org||[],h.r,h.ci,end,title?divTitle(title):'Dywizja '+(out.length+1));ev.follow=true;out.push(ev)})});return out}
 /* kolejność: 'total' (suma) albo 't4'/'t1' (bez najsłabszych rund) */
 function rank(ev){var L=ev.list,pref=ev.follow?ev.pref:SORT,m=pref!=='total'||!ev.hasTotal?'t4':'total';ev.mode=m;
-  if(m==='t4'){var hasLp=!ev.follow&&L.length&&L.every(function(x){return x.lp!=null});
+  if(m==='t4'){var hasLp=false;/* kolejność zawsze z punktów (po imporcie z PDF wiersze w Excelu nie są sortowane) */
     if(hasLp)L.sort(function(a,b){return a.lp-b.lp||b.t4-a.t4});else L.sort(function(a,b){return b.t4-a.t4||b.total-a.total});
     var pl=0,lp=null;L.forEach(function(x,i){if(hasLp){x.place=x.lp;return}var kk=x.t4+'|'+x.total;if(kk!==lp){pl=i+1;lp=kk}x.place=pl})}
   else{L.sort(function(a,b){return b.total-a.total||b.t4-a.t4});var pl2=0,k=null;L.forEach(function(x,i){var kk=x.total+'|'+x.t4;if(kk!==k){pl2=i+1;k=kk}x.place=pl2})}

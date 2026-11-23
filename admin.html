@@ -63,7 +63,7 @@ small.h a{color:var(--deep);text-decoration:underline}
 .seg small{font-size:12px;color:var(--mut);font-weight:500}
 .seg input:checked+span{border-color:var(--blue);background:#fff;box-shadow:0 0 0 4px rgba(26,166,232,.15)}
 .seg input:focus-visible+span{outline:2px solid var(--blue)}
-.pvbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:20px 0 10px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.pvbar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;margin:20px 0 10px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
 .dev{display:flex;gap:6px}
 .dev button{font:700 11px var(--f);letter-spacing:.12em;text-transform:uppercase;padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--navy);cursor:pointer}
 .dev button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
@@ -86,6 +86,36 @@ small.h a{color:var(--deep);text-decoration:underline}
 select{width:100%;font:500 15px var(--f);color:var(--ink);background:var(--mist);border:1px solid var(--line);border-radius:14px;padding:12px 12px;outline:none}
 .btn.addb{margin-top:12px}
 @media(max-width:760px){.dvr{grid-template-columns:34px 1fr}.dvr .sw{grid-column:2}.bzr{grid-template-columns:1fr auto}.bzr .lb,.bzr .pa,.bzr .pb,.bzr .vs2{grid-column:1/-1}.bzr .vs2{text-align:center}}
+.pinfo{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:18px;padding:16px 18px;border-radius:16px;background:var(--ice);font-size:13px;color:var(--mut);font-weight:600}
+.pinfo b{color:var(--navy)}
+.popt{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;align-items:end;margin-top:6px}
+.chk2{display:flex!important;align-items:center;gap:10px;margin:0 0 4px!important;padding:13px 14px;border:1px solid var(--line);border-radius:14px;background:var(--mist);cursor:pointer;text-transform:none!important;letter-spacing:0!important;font-size:14px!important;color:var(--navy)!important}
+.chk2 input{width:18px;height:18px;padding:0}
+.prep{margin-top:6px}
+.cats2{display:inline-flex;gap:4px;padding:5px;margin-top:22px;border-radius:999px;background:#fff;border:1px solid var(--line)}
+.cats2 button{font:700 12px/1 var(--f);letter-spacing:.14em;text-transform:uppercase;padding:14px 22px;border-radius:999px;border:0;background:none;color:var(--mut);cursor:pointer;transition:background .2s,color .2s}
+.cats2 button.on{background:var(--navy);color:#fff}
+.rt{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+.rt td{padding:7px 6px;border-bottom:1px solid var(--line)}
+.rt td.n{width:34px;color:var(--mut);font-weight:700}
+.rt td.p{text-align:right;font-weight:800;color:var(--navy);width:56px}
+.rt .dvh td{padding-top:14px;font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);border-bottom:1px solid var(--navy)}
+.tag{display:inline-block;margin-left:6px;padding:2px 7px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;vertical-align:1px}
+.tag.new{background:#e6f1ff;color:#0b6fa6}
+.tag.bl{background:linear-gradient(135deg,#ffb020,#ff8a00);color:#fff}
+.tag.ab{background:#f1f4f6;color:#8aa0ae}
+@media(max-width:760px){.popt{grid-template-columns:1fr 1fr}.cats2{display:flex}.cats2 button{flex:1;padding:13px 8px;letter-spacing:.06em;font-size:11px}}
+.bkbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:16px}
+.bkbar span{font-size:13px;color:var(--mut)}
+.bkl li{flex-wrap:wrap;align-items:center}
+.bkl .bkd{min-width:150px;font-weight:700;color:var(--navy)}
+.bkl .bkn{flex:1;min-width:160px;font-size:14px;color:var(--ink)}
+.bkl .bkf{display:flex;gap:6px;flex-wrap:wrap}
+.bkl .bkf a{font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--deep);background:var(--ice);border-radius:999px;padding:6px 10px;cursor:pointer;text-decoration:none}
+.bkl .bkf a:hover{background:var(--sky)}
+.rst{font:700 11px var(--f);letter-spacing:.14em;text-transform:uppercase;color:#fff;background:linear-gradient(120deg,var(--deep),var(--blue));border:0;border-radius:999px;padding:9px 14px;cursor:pointer;flex:none}
+.rst[disabled],.del[disabled]{opacity:.5;pointer-events:none}
+.bkl .acts{display:flex;gap:6px}
 .evf{display:grid;grid-template-columns:180px 150px 1fr;gap:12px}
 .evl li{align-items:center}
 .evl .ed{min-width:130px;font-weight:700;color:var(--navy)}
@@ -96,6 +126,9 @@ select{width:100%;font:500 15px var(--f);color:var(--ink);background:var(--mist)
 @media(max-width:600px){.evf{grid-template-columns:1fr 1fr}.evf .evt{grid-column:1/-1}.evl li{flex-wrap:wrap}.evl .ed{min-width:0;width:100%}}
 @media(max-width:600px){.hd{padding:8px 8px 8px 16px}.hd img{height:44px}.who span{display:none}.card{padding:24px}.row3{grid-template-columns:1fr}}
 </style>
+<script src="lib/pdf.min.js" defer></script>
+<script src="lib/jszip.min.js" defer></script>
+<script src="lib/import.js" defer></script>
 </head>
 <body>
 <header class="hd">
@@ -138,6 +171,36 @@ select{width:100%;font:500 15px var(--f);color:var(--ink);background:var(--mist)
   <!-- PANEL -->
   <div id="vPanel" hidden>
     <div class="grid">
+      <div class="card wide" id="cPdf">
+        <h2>Wyniki z PDF (Karting Manager)</h2>
+        <p class="sub">Wgraj PDF z wynikami rundy — panel sam wpisze punkty do generalki i dywizji. Zawodników rozpoznaje po imieniu i nazwisku; nowych dopisuje z zerami w poprzednich rundach. Nic nie zapisuje się, dopóki nie klikniesz „Zapisz wyniki na stronie”.</p>
+        <label class="drop" id="pdfDrop"><input type="file" id="pdfFile" accept=".pdf,application/pdf"><b id="pdfT">Kliknij lub przeciągnij PDF z wynikami</b><span id="pdfS">eksport z Karting Managera</span></label>
+        <div id="pdfBox" hidden>
+          <div class="pinfo" id="pdfInfo"></div>
+          <div class="popt">
+            <div><label for="pRound">Runda w generalce</label><input id="pRound" type="number" min="1" max="30"></div>
+            <div><label for="pDRound">Runda w dywizjach</label><input id="pDRound" type="number" min="1" max="30"></div>
+            <div><label for="pMode">Punkty w dywizjach</label><select id="pMode"><option value="div">wg miejsca w dywizji</option><option value="all">wg miejsca w całym wyścigu</option></select></div>
+            <label class="chk2"><input type="checkbox" id="pX2"><span>Punkty x2 (finał)</span></label>
+          </div>
+          <div id="pdfWarn"></div>
+          <div class="cats2 cat2" role="tablist" aria-label="Co pokazać"><button type="button" data-cat="gen" class="on">Klasyfikacja generalna</button><button type="button" data-cat="div">Dywizje</button></div>
+          <div class="prep">
+            <div id="boxG"><div id="repG"></div></div>
+            <div id="boxD" hidden><div id="repD"></div></div>
+          </div>
+          <div class="pvbar"><span>Podgląd strony</span><span class="dev"><button type="button" data-w="100%" class="on">Komputer</button><button type="button" data-w="390px">Telefon</button></span></div>
+          <div class="pvwrap"><iframe id="pvp" title="Podgląd wyników z PDF"></iframe></div>
+          <button class="btn" type="button" id="pdfSave" disabled>Zapisz wyniki na stronie</button>
+        </div>
+      </div>
+
+      <div class="card wide" id="cBk">
+        <h2>Kopie zapasowe</h2>
+        <p class="sub">Panel sam robi kopię wyników przed każdym importem PDF i wgraniem Excela. Gdyby coś poszło nie tak, kliknij „Przywróć” przy kopii sprzed zmiany — przed przywróceniem obecny stan też trafi do kopii, więc niczego nie stracisz.</p>
+        <div class="bkbar"><button type="button" class="btn ghost" id="bkNow">Zrób kopię teraz</button><span id="bkInfo"></span></div>
+        <ul class="list bkl" id="bkList"><li><span>Wczytuję…</span></li></ul>
+      </div>
       <div class="card wide">
         <h2>Wgraj wyniki (Excel)</h2>
         <p class="sub">Wybierz, który plik wgrywasz — zastąpi obecny na stronie. Zawodnicy zobaczą nowe wyniki po ok. 1–2 minutach.</p>
@@ -266,7 +329,7 @@ function loadCfg(token){
 function saveCfg(message){var txt=JSON.stringify(cfg,null,2)+'\n';return ghPut(CFG_PATH,b64(enc.encode(txt)),message,S.token)}
 
 /* ---------- sesja ---------- */
-function startSession(login,raw,token){return aesKey(raw).then(function(k){S={login:login,raw:raw,key:k,token:token};var st=store();if(st)st.setItem('cx_s',JSON.stringify({l:login,r:b64(raw),t:token}));renderUsers();show('#vPanel');loadEv();loadSet()})}
+function startSession(login,raw,token){return aesKey(raw).then(function(k){S={login:login,raw:raw,key:k,token:token};var st=store();if(st)st.setItem('cx_s',JSON.stringify({l:login,r:b64(raw),t:token}));renderUsers();show('#vPanel');loadEv();loadSet();loadBk()})}
 function endSession(){S=null;var st=store();if(st)st.removeItem('cx_s');$('#lP').value='';show('#vLogin')}
 function renderUsers(){var ul=$('#users');ul.innerHTML='';Object.keys(cfg.users).sort().forEach(function(n){var li=document.createElement('li'),b=document.createElement('b'),sp=document.createElement('span');b.textContent=n;sp.textContent=(S&&n===S.login)?'Ty':'admin';li.appendChild(b);li.appendChild(sp);ul.appendChild(li)});$('#fLogin').n.value=S?S.login:''}
 function checkPass(pass){var u=cfg.users[S.login];if(!u)return Promise.reject('Twoje konto nie istnieje w konfiguracji.');return unwrap(pass,u).catch(function(){throw 'Błędne aktualne hasło.'})}
@@ -310,8 +373,8 @@ $('#file').addEventListener('change',function(){pick(this.files[0])});
 var drop=$('#drop');['dragenter','dragover'].forEach(function(t){drop.addEventListener(t,function(e){e.preventDefault();drop.classList.add('over')})});
 ['dragleave','drop'].forEach(function(t){drop.addEventListener(t,function(e){e.preventDefault();drop.classList.remove('over')})});
 drop.addEventListener('drop',function(e){var f=e.dataTransfer&&e.dataTransfer.files[0];if(f)pick(f)});
-$('#upBtn').addEventListener('click',function(){if(!picked)return;var b=this;b.disabled=true;b.textContent='Wgrywam…';
-  var kind=selKind();ghPut(kind==='div'?DIV_PATH:XLSX_PATH,b64(picked),(kind==='div'?'Dywizje':'Wyniki')+': nowy plik ('+S.login+')',S.token).then(function(){msg((kind==='div'?'Plik dywizji wgrany':'Wyniki wgrane')+'. Strona pokaże je w ciągu ok. 1–2 minut.');picked=null;$('#file').value='';$('#dropT').textContent='Kliknij lub przeciągnij plik .xlsx';$('#dropS').textContent='maks. 20 MB'})
+$('#upBtn').addEventListener('click',function(){if(!picked)return;var b=this;b.disabled=true;b.textContent='Robię kopię zapasową…';
+  var kind=selKind(),bk=null;makeBackup('przed wgraniem '+(kind==='div'?'dywizji':'generalki')).then(function(d){bk=d;b.textContent='Wgrywam…';return ghPut(kind==='div'?DIV_PATH:XLSX_PATH,b64(picked),(kind==='div'?'Dywizje':'Wyniki')+': nowy plik ('+S.login+')',S.token)}).then(function(){msg((kind==='div'?'Plik dywizji wgrany':'Wyniki wgrane')+'. Strona pokaże je w ciągu ok. 1–2 minut.'+(bk?' Kopia sprzed zmian: '+bkName(bk).when+'.':''));loadBk();picked=null;$('#file').value='';$('#dropT').textContent='Kliknij lub przeciągnij plik .xlsx';$('#dropS').textContent='maks. 20 MB'})
   .catch(function(e){msg(ghErr(e),'bad');b.disabled=false}).then(function(){b.textContent='Wgraj na stronę'})});
 
 /* ---------- konto ---------- */
@@ -345,7 +408,7 @@ function loadSet(){return ghFile(SET_PATH,S&&S.token).then(function(f){if(f&&f.c
   .catch(function(){return fetch(SET_PATH+'?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():{}}).catch(function(){return{}})})
   .then(function(j){SETTINGS=j||{};curSort=SETTINGS.sort==='t4'?'t4':'total';setRadio(curSort);pvLoad();divFromSettings();pvdLoad()})}
 [].forEach.call(document.querySelectorAll('#fSort input[name=sort]'),function(r){r.addEventListener('change',pvSend)});
-[].forEach.call(document.querySelectorAll('.dev button'),function(b){b.addEventListener('click',function(){var c=b.closest('.card');[].forEach.call(c.querySelectorAll('.dev button'),function(x){x.classList.toggle('on',x===b)});c.querySelector('iframe').style.width=b.dataset.w})});
+[].forEach.call(document.querySelectorAll('.dev button[data-w]'),function(b){b.addEventListener('click',function(){var c=b.closest('.card');[].forEach.call(b.parentNode.querySelectorAll('button'),function(x){x.classList.toggle('on',x===b)});c.querySelector('iframe').style.width=b.dataset.w})});
 $('#fSort').addEventListener('submit',function(e){e.preventDefault();var f=this,v=selSort();msg('');busy(f,true);
   saveSet({sort:v},'Ustawienia: kolejność wg '+(v==='t4'?'Total -4':'sumy'))
   .then(function(){curSort=v;msg('Zapisano: kolejność według '+(v==='t4'?'Total −4':'sumy (Total)')+'. Strona zmieni się w ciągu ok. 1–2 minut.')}).catch(function(err){msg(ghErr(err),'bad')}).then(function(){busy(f,false)})});
@@ -386,6 +449,91 @@ $('#fDiv').addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.t
 $('#fDiv').addEventListener('submit',function(e){e.preventDefault();var f=this,c=dcfg();msg('');
   if(c.divisions.some(function(d){return!d.name}))return msg('Każda dywizja musi mieć nazwę.','bad');
   busy(f,true);saveSet(c,'Ustawienia: dywizje i baraże').then(function(){msg('Zapisano dywizje ('+c.divisions.length+') i baraże ('+c.baraze.length+'). Strona zmieni się w ciągu ok. 1–2 minut.')}).catch(function(err){msg(ghErr(err),'bad')}).then(function(){busy(f,false)})});
+
+/* ---------- import z PDF ---------- */
+var PDFX={P:null,srcG:null,srcD:null,outG:null,outD:null,cat:'gen',ready:false,busy:false,T:null};
+function repoBuf(path){return ghFile(path,S&&S.token).then(function(f){if(f&&f.content)return unb64(f.content).buffer;if(f&&f.download_url)return fetch(f.download_url+'?t='+Date.now()).then(function(r){return r.arrayBuffer()});throw 0})
+  .catch(function(){return fetch(path+'?t='+Date.now(),{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.arrayBuffer()})}).catch(function(){return null})}
+function escH(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function pdfPick(file){if(!file)return;if(!/\.pdf$/i.test(file.name)&&file.type!=='application/pdf'){msg('To nie jest plik PDF.','bad');return}
+  if(!window.CXImport||!window.pdfjsLib||!window.JSZip){msg('Nie wczytały się biblioteki importu (folder lib). Sprawdź, czy wgrałeś folder lib na GitHub.','bad');return}
+  msg('');$('#pdfT').textContent='Czytam '+file.name+'…';$('#pdfSave').disabled=true;
+  file.arrayBuffer().then(CXImport.parsePdf).then(function(P){
+    if(!P.results.length)throw 'W tym PDF nie znalazłem listy wyników (kolumny # i Driver).';
+    PDFX.P=P;$('#pdfT').textContent=file.name;$('#pdfS').textContent=P.results.length+' zawodników odczytanych';
+    $('#pRound').value=P.round||'';$('#pDRound').value=P.round||'';
+    $('#pdfInfo').innerHTML='<span>Event: <b>'+escH(P.event||'—')+'</b></span><span>Data: <b>'+escH(P.date||'—')+'</b></span><span>Zawodników: <b>'+P.results.length+'</b></span><span>Bestlap: <b>'+(P.bestlap?escH(P.bestlap.name)+' ('+escH(P.bestlap.time)+')':'brak')+'</b></span>';
+    $('#pdfBox').hidden=false;
+    return Promise.all([repoBuf(XLSX_PATH),repoBuf(DIV_PATH)])}).then(function(b){if(!b)return;PDFX.srcG=b[0];PDFX.srcD=b[1];pdfRun()})
+  .catch(function(err){$('#pdfT').textContent='Kliknij lub przeciągnij PDF z wynikami';msg(typeof err==='string'?err:'Nie udało się odczytać PDF.','bad')})}
+function pdfRun(){var P=PDFX.P;if(!P)return;var rg=+$('#pRound').value,rd=+$('#pDRound').value,x2=$('#pX2').checked,mode=$('#pMode').value,warn=[];
+  if(!rg)warn.push('Nie rozpoznałem numeru rundy z pola Event — wpisz rundę ręcznie.');
+  if(!PDFX.srcG)warn.push('Nie znalazłem pliku generalki na stronie (wyniki/wyniki.xlsx).');
+  if(!PDFX.srcD)warn.push('Nie ma jeszcze pliku dywizji na stronie — dywizje pominięte. Wgraj go w sekcji „Wgraj wyniki (Excel)”.');
+  P.round=rg;var jobs=[];PDFX.outG=PDFX.outD=null;
+  if(PDFX.srcG&&rg)jobs.push(CXImport.openXlsx(PDFX.srcG.slice(0)).then(function(W){var r=CXImport.applyGeneral(W,P,{round:rg,x2:x2});PDFX.repG=r;return CXImport.saveXlsx(W)}).then(function(u){PDFX.outG=u}).catch(function(e){PDFX.repG=null;warn.push('Generalka: '+(typeof e==='string'?e:'błąd zapisu Excela.'))}));
+  if(PDFX.srcD&&rd)jobs.push(CXImport.openXlsx(PDFX.srcD.slice(0)).then(function(W){var r=CXImport.applyDivs(W,P,{round:rd,x2:x2,divMode:mode});PDFX.repD=r;return CXImport.saveXlsx(W)}).then(function(u){PDFX.outD=u}).catch(function(e){PDFX.repD=null;warn.push('Dywizje: '+(typeof e==='string'?e:'błąd zapisu Excela.'))}));
+  Promise.all(jobs).then(function(){
+    var g=PDFX.outG?PDFX.repG:null,d=PDFX.outD?PDFX.repD:null;
+    if(g&&g.bestlapMissing)warn.push('Bestlap ma „'+g.bestlapMissing+'”, ale nie ma go na liście wyników — nie przyznano punktu.');
+    if(d&&d.unassigned.length)warn.push('Bez dywizji (tylko w generalce): '+d.unassigned.map(escH).join(', ')+'.');
+    if(d&&d.overflow)warn.push('Brak wolnych miejsc w tabeli dywizji dla: '+d.overflow.map(escH).join(', ')+'.');
+    if(d)d.divs.forEach(function(x){if(x.noCol&&x.rows.length===0)return;if(x.noCol)warn.push(escH(x.name)+': brak kolumny rundy '+rd+'.')});
+    $('#pdfWarn').innerHTML=warn.map(function(w){return'<div class="note warn" style="margin:14px 0 0">'+w+'</div>'}).join('');
+    $('#repG').innerHTML=g?'<table class="rt">'+g.map(function(x){return'<tr><td class="n">'+x.pos+'.</td><td>'+escH(x.name)+(x.isNew?'<span class="tag new">nowy</span>':'')+(x.bestlap?'<span class="tag bl">bestlap +1</span>':'')+'</td><td class="p">'+x.pts+'</td></tr>'}).join('')+(g.absent?'<tr><td></td><td style="color:var(--mut)">Pozostali w generalce ('+g.absent+'): 0 pkt</td><td></td></tr>':'')+'</table>':'<p class="sub">—</p>';
+    $('#repD').innerHTML=d?'<table class="rt">'+d.divs.filter(function(x){return x.rows.length}).map(function(x){return'<tr class="dvh"><td colspan="3">'+escH(x.name)+(x.filled?' · uzupełniono skład z listy przydziału':'')+'</td></tr>'+x.rows.map(function(y){return'<tr><td class="n">'+(y.dpos?y.dpos+'.':'')+'</td><td>'+escH(y.name)+(y.pos?' <span style="color:var(--mut)">(P'+y.pos+')</span>':'<span class="tag ab">nie jechał</span>')+'</td><td class="p">'+y.pts+'</td></tr>'}).join('')}).join('')+'</table>':'<p class="sub">—</p>';
+    $('#pdfSave').disabled=!(PDFX.outG||PDFX.outD);pvpSend()})}
+function pvpSend(){var f=$('#pvp');if(!PDFX.ready||!f.contentWindow)return;var m={type:'cx-preview',cat:PDFX.cat};if(PDFX.outG)m.buf=PDFX.outG.slice(0).buffer;if(PDFX.outD)m.dbuf=PDFX.outD.slice(0).buffer;f.contentWindow.postMessage(m,location.origin)}
+function pvpLoad(){var f=$('#pvp');PDFX.ready=false;f.onload=function(){PDFX.ready=true;setTimeout(pvpSend,400)};f.src='index.html?preview=1&t='+Date.now()}
+$('#pdfFile').addEventListener('change',function(){if(!$('#pvp').getAttribute('src'))pvpLoad();pdfPick(this.files[0])});
+var pdrop=$('#pdfDrop');['dragenter','dragover'].forEach(function(t){pdrop.addEventListener(t,function(e){e.preventDefault();pdrop.classList.add('over')})});
+['dragleave','drop'].forEach(function(t){pdrop.addEventListener(t,function(e){e.preventDefault();pdrop.classList.remove('over')})});
+pdrop.addEventListener('drop',function(e){var f=e.dataTransfer&&e.dataTransfer.files[0];if(f){if(!$('#pvp').getAttribute('src'))pvpLoad();pdfPick(f)}});
+['pRound','pDRound','pMode','pX2'].forEach(function(id){$('#'+id).addEventListener(id==='pX2'||id==='pMode'?'change':'input',function(){clearTimeout(PDFX.T);PDFX.T=setTimeout(pdfRun,300)})});
+[].forEach.call(document.querySelectorAll('.cat2 button'),function(b){b.addEventListener('click',function(){PDFX.cat=b.dataset.cat;[].forEach.call(document.querySelectorAll('.cat2 button'),function(x){x.classList.toggle('on',x===b)});$('#boxG').hidden=PDFX.cat!=='gen';$('#boxD').hidden=PDFX.cat!=='div';pvpSend()})});
+$('#pdfSave').addEventListener('click',function(){var b=this,rg=+$('#pRound').value;if(!PDFX.outG&&!PDFX.outD)return;b.disabled=true;b.textContent='Zapisuję…';msg('');
+  var ev=(PDFX.P.event||'PDF')+' → runda '+rg,chain=Promise.resolve(),done=[],bk=null;
+  b.textContent='Robię kopię zapasową…';chain=makeBackup('przed importem '+(PDFX.P.event||'PDF')).then(function(d){bk=d;b.textContent='Zapisuję…'});
+  if(PDFX.outG)chain=chain.then(function(){return ghPut(XLSX_PATH,b64(PDFX.outG),'Import PDF: '+ev+' (generalka)',S.token)}).then(function(){done.push('generalka');PDFX.srcG=PDFX.outG.slice(0).buffer});
+  if(PDFX.outD)chain=chain.then(function(){return ghPut(DIV_PATH,b64(PDFX.outD),'Import PDF: '+ev+' (dywizje)',S.token)}).then(function(){done.push('dywizje');PDFX.srcD=PDFX.outD.slice(0).buffer});
+  chain.then(function(){msg('Zapisano wyniki z '+(PDFX.P.event||'PDF')+' ('+done.join(' i ')+'). Strona pokaże je w ciągu ok. 1–2 minut.'+(bk?' Kopia sprzed zmian: '+bkName(bk).when+'.':''));loadBk()})
+  .catch(function(e){msg((done.length?'Zapisano tylko: '+done.join(', ')+'. ':'')+ghErr(e),'bad')}).then(function(){b.textContent='Zapisz wyniki na stronie';b.disabled=false})});
+
+/* ---------- kopie zapasowe ---------- */
+var BK_DIR='kopie', BK_FILES=[{p:'wyniki/wyniki.xlsx',n:'wyniki.xlsx',l:'Generalka'},{p:'wyniki/dywizje.xlsx',n:'dywizje.xlsx',l:'Dywizje'},{p:'ustawienia.json',n:'ustawienia.json',l:'Ustawienia'},{p:'terminarz.json',n:'terminarz.json',l:'Terminarz'}];
+function pad(n){return(n<10?'0':'')+n}
+function slug(s){return String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/ł/g,'l').replace(/Ł/g,'L').replace(/[^A-Za-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,50)}
+function bkName(d){var m=/^(\d{4})-(\d\d)-(\d\d)_(\d\d)-(\d\d)-(\d\d)_?(.*)$/.exec(d);if(!m)return{when:d,label:''};var PL={przywroceniem:'przywróceniem',reczna:'ręczna',dywizji:'dywizji'};return{when:m[3]+'.'+m[2]+'.'+m[1]+' '+m[4]+':'+m[5],label:m[7].replace(/-/g,' ').replace(/\b(przywroceniem|reczna)\b/g,function(w){return PL[w]})}}
+function ghDel(p,sha,message){var r=repo();return gh('/repos/'+r.owner+'/'+r.name+'/contents/'+p,{method:'DELETE',token:S.token,body:{message:message,sha:sha,branch:r.branch}}).then(function(res){if(!res.ok)throw res})}
+/* kopia obecnych plików do kopie/RRRR-MM-DD_GG-MM-SS_opis/ — zwraca nazwę katalogu albo null, gdy nie było czego kopiować */
+function makeBackup(label){var d=new Date(),dir=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'_'+pad(d.getHours())+'-'+pad(d.getMinutes())+'-'+pad(d.getSeconds())+(label?'_'+slug(label):''),n=0,chain=Promise.resolve();
+  BK_FILES.forEach(function(f){chain=chain.then(function(){return ghFile(f.p,S.token)}).then(function(x){if(!x||!x.content)return;n++;return ghPut(BK_DIR+'/'+dir+'/'+f.n,String(x.content).replace(/\s/g,''),'Kopia zapasowa: '+(label||'ręczna')+' ('+f.l+')',S.token)})});
+  return chain.then(function(){return n?dir:null})}
+function loadBk(){var ul=$('#bkList');return ghFile(BK_DIR,S.token).then(function(list){ul.innerHTML='';
+    var dirs=(Array.isArray(list)?list:[]).filter(function(x){return x.type==='dir'}).map(function(x){return x.name}).sort().reverse();
+    $('#bkInfo').textContent=dirs.length?'Kopii: '+dirs.length:'';
+    if(!dirs.length){ul.innerHTML='<li><span>Brak kopii — pierwsza powstanie automatycznie przy imporcie wyników.</span></li>';return}
+    dirs.slice(0,40).forEach(function(dname){var nm=bkName(dname),li=document.createElement('li');
+      li.innerHTML='<span class="bkd"></span><span class="bkn"></span><span class="bkf"></span><span class="acts"><button type="button" class="rst">Przywróć</button><button type="button" class="del">Usuń</button></span>';
+      li.querySelector('.bkd').textContent=nm.when;li.querySelector('.bkn').textContent=nm.label||'kopia ręczna';
+      var ff=li.querySelector('.bkf');BK_FILES.forEach(function(f){var a=document.createElement('a');a.textContent=f.l;a.title='Pobierz '+f.n;a.addEventListener('click',function(){bkDownload(dname,f,a)});ff.appendChild(a)});
+      var rb=li.querySelector('.rst'),db=li.querySelector('.del');
+      rb.addEventListener('click',function(){confirm2(rb,'Przywróć',function(){bkRestore(dname,nm,rb)})});
+      db.addEventListener('click',function(){confirm2(db,'Usuń',function(){bkDelete(dname,db)})});ul.appendChild(li)})})
+  .catch(function(){ul.innerHTML='<li><span>Nie udało się wczytać listy kopii.</span></li>'})}
+function confirm2(b,txt,fn){if(b.dataset.c!=='1'){b.dataset.c='1';b.textContent='Na pewno?';setTimeout(function(){b.dataset.c='';b.textContent=txt},4000);return}b.dataset.c='';b.textContent=txt;fn()}
+function bkDownload(dname,f,a){ghFile(BK_DIR+'/'+dname+'/'+f.n,S.token).then(function(x){if(!x||!x.content){msg('W tej kopii nie ma pliku: '+f.l+'.','bad');return}
+  var u=unb64(x.content),bl=new Blob([u],{type:/xlsx$/.test(f.n)?'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':'application/json'}),url=URL.createObjectURL(bl),l=document.createElement('a');
+  l.href=url;l.download=dname.slice(0,16)+'_'+f.n;document.body.appendChild(l);l.click();setTimeout(function(){URL.revokeObjectURL(url);l.remove()},2000)}).catch(function(e){msg(ghErr(e),'bad')})}
+function bkRestore(dname,nm,b){b.disabled=true;b.textContent='Przywracam…';msg('');var restored=[];
+  makeBackup('przed przywróceniem').then(function(){return ghFile(BK_DIR+'/'+dname,S.token)}).then(function(list){var have={};(list||[]).forEach(function(x){have[x.name]=1});var chain=Promise.resolve();
+    BK_FILES.forEach(function(f){if(!have[f.n])return;chain=chain.then(function(){return ghFile(BK_DIR+'/'+dname+'/'+f.n,S.token)}).then(function(x){if(!x||!x.content)return;return ghPut(f.p,String(x.content).replace(/\s/g,''),'Przywrócono z kopii '+nm.when+' ('+f.l+')',S.token).then(function(){restored.push(f.l)})})});return chain})
+  .then(function(){msg('Przywrócono stan z '+nm.when+' ('+restored.join(', ')+'). Strona wróci do tych wyników w ciągu ok. 1–2 minut.');PDFX.srcG=PDFX.srcD=null;loadSet();loadEv();loadBk()})
+  .catch(function(e){msg((restored.length?'Przywrócono tylko: '+restored.join(', ')+'. ':'')+ghErr(e),'bad');b.disabled=false;b.textContent='Przywróć'})}
+function bkDelete(dname,b){b.disabled=true;msg('');ghFile(BK_DIR+'/'+dname,S.token).then(function(list){var chain=Promise.resolve();(list||[]).forEach(function(x){chain=chain.then(function(){return ghDel(x.path,x.sha,'Usunięto kopię '+dname)})});return chain})
+  .then(function(){msg('Usunięto kopię z '+bkName(dname).when+'.');loadBk()}).catch(function(e){msg(ghErr(e),'bad');b.disabled=false})}
+$('#bkNow').addEventListener('click',function(){var b=this;b.disabled=true;b.textContent='Robię kopię…';msg('');
+  makeBackup('ręczna').then(function(d){msg(d?'Zrobiono kopię zapasową ('+bkName(d).when+').':'Nie ma jeszcze plików do skopiowania.');loadBk()}).catch(function(e){msg(ghErr(e),'bad')}).then(function(){b.disabled=false;b.textContent='Zrób kopię teraz'})});
 
 /* ---------- terminarz ---------- */
 var EV_PATH='terminarz.json', events=[];
