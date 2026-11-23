@@ -92,6 +92,7 @@ select{width:100%;font:500 15px var(--f);color:var(--ink);background:var(--mist)
 .chk2{display:flex!important;align-items:center;gap:10px;margin:0 0 4px!important;padding:13px 14px;border:1px solid var(--line);border-radius:14px;background:var(--mist);cursor:pointer;text-transform:none!important;letter-spacing:0!important;font-size:14px!important;color:var(--navy)!important}
 .chk2 input{width:18px;height:18px;padding:0}
 .prep{margin-top:6px}
+.pto{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:12px}.pto>span{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--mut);margin-right:4px}.pto .chk2{margin:0!important}
 .cats2{display:inline-flex;gap:4px;padding:5px;margin-top:22px;border-radius:999px;background:#fff;border:1px solid var(--line)}
 .cats2 button{font:700 12px/1 var(--f);letter-spacing:.14em;text-transform:uppercase;padding:14px 22px;border-radius:999px;border:0;background:none;color:var(--mut);cursor:pointer;transition:background .2s,color .2s}
 .cats2 button.on{background:var(--navy);color:#fff}
@@ -183,6 +184,7 @@ select{width:100%;font:500 15px var(--f);color:var(--ink);background:var(--mist)
             <div><label for="pMode">Punkty w dywizjach</label><select id="pMode"><option value="div">wg miejsca w dywizji</option><option value="all">wg miejsca w całym wyścigu</option></select></div>
             <label class="chk2"><input type="checkbox" id="pX2"><span>Punkty x2 (finał)</span></label>
           </div>
+          <div class="pto"><span>Zapisz wyniki do:</span><label class="chk2"><input type="checkbox" id="pDoG" checked><span>Klasyfikacji generalnej</span></label><label class="chk2"><input type="checkbox" id="pDoD" checked><span>Dywizji</span></label></div>
           <div id="pdfWarn"></div>
           <div class="cats2 cat2" role="tablist" aria-label="Co pokazać"><button type="button" data-cat="gen" class="on">Klasyfikacja generalna</button><button type="button" data-cat="div">Dywizje</button></div>
           <div class="prep">
@@ -464,15 +466,16 @@ function pdfPick(file){if(!file)return;if(!/\.pdf$/i.test(file.name)&&file.type!
     $('#pRound').value=P.round||'';$('#pDRound').value=P.round||'';
     $('#pdfInfo').innerHTML='<span>Event: <b>'+escH(P.event||'—')+'</b></span><span>Data: <b>'+escH(P.date||'—')+'</b></span><span>Zawodników: <b>'+P.results.length+'</b></span><span>Bestlap: <b>'+(P.bestlap?escH(P.bestlap.name)+' ('+escH(P.bestlap.time)+')':'brak')+'</b></span>';
     $('#pdfBox').hidden=false;
-    return Promise.all([repoBuf(XLSX_PATH),repoBuf(DIV_PATH)])}).then(function(b){if(!b)return;PDFX.srcG=b[0];PDFX.srcD=b[1];pdfRun()})
+    return Promise.all([repoBuf(XLSX_PATH),repoBuf(DIV_PATH)])}).then(function(b){$('#pdfFile').value='';if(!b)return;PDFX.srcG=b[0];PDFX.srcD=b[1];pdfRun()})
   .catch(function(err){$('#pdfT').textContent='Kliknij lub przeciągnij PDF z wynikami';msg(typeof err==='string'?err:'Nie udało się odczytać PDF.','bad')})}
-function pdfRun(){var P=PDFX.P;if(!P)return;var rg=+$('#pRound').value,rd=+$('#pDRound').value,x2=$('#pX2').checked,mode=$('#pMode').value,warn=[];
-  if(!rg)warn.push('Nie rozpoznałem numeru rundy z pola Event — wpisz rundę ręcznie.');
-  if(!PDFX.srcG)warn.push('Nie znalazłem pliku generalki na stronie (wyniki/wyniki.xlsx).');
-  if(!PDFX.srcD)warn.push('Nie ma jeszcze pliku dywizji na stronie — dywizje pominięte. Wgraj go w sekcji „Wgraj wyniki (Excel)”.');
+function pdfRun(){var P=PDFX.P;if(!P)return;var doG=$('#pDoG').checked,doD=$('#pDoD').checked,rg=+$('#pRound').value,rd=+$('#pDRound').value,x2=$('#pX2').checked,mode=$('#pMode').value,warn=[];$('#pRound').disabled=!doG;$('#pDRound').disabled=!doD;$('#pMode').disabled=!doD;
+  if(!doG&&!doD)warn.push('Zaznacz, do czego zapisać wyniki: generalka, dywizje albo oba.');
+  if(doG&&!rg)warn.push('Nie rozpoznałem numeru rundy z pola Event — wpisz rundę ręcznie.');
+  if(doG&&!PDFX.srcG)warn.push('Nie znalazłem pliku generalki na stronie (wyniki/wyniki.xlsx).');
+  if(doD&&!PDFX.srcD)warn.push('Nie ma jeszcze pliku dywizji na stronie — dywizje pominięte. Wgraj go w sekcji „Wgraj wyniki (Excel)”.');
   P.round=rg;var jobs=[];PDFX.outG=PDFX.outD=null;
-  if(PDFX.srcG&&rg)jobs.push(CXImport.openXlsx(PDFX.srcG.slice(0)).then(function(W){var r=CXImport.applyGeneral(W,P,{round:rg,x2:x2});PDFX.repG=r;return CXImport.saveXlsx(W)}).then(function(u){PDFX.outG=u}).catch(function(e){PDFX.repG=null;warn.push('Generalka: '+(typeof e==='string'?e:'błąd zapisu Excela.'))}));
-  if(PDFX.srcD&&rd)jobs.push(CXImport.openXlsx(PDFX.srcD.slice(0)).then(function(W){var r=CXImport.applyDivs(W,P,{round:rd,x2:x2,divMode:mode});PDFX.repD=r;return CXImport.saveXlsx(W)}).then(function(u){PDFX.outD=u}).catch(function(e){PDFX.repD=null;warn.push('Dywizje: '+(typeof e==='string'?e:'błąd zapisu Excela.'))}));
+  if(doG&&PDFX.srcG&&rg)jobs.push(CXImport.openXlsx(PDFX.srcG.slice(0)).then(function(W){var r=CXImport.applyGeneral(W,P,{round:rg,x2:x2});PDFX.repG=r;return CXImport.saveXlsx(W)}).then(function(u){PDFX.outG=u}).catch(function(e){PDFX.repG=null;warn.push('Generalka: '+(typeof e==='string'?e:'błąd zapisu Excela.'))}));
+  if(doD&&PDFX.srcD&&rd)jobs.push(CXImport.openXlsx(PDFX.srcD.slice(0)).then(function(W){var r=CXImport.applyDivs(W,P,{round:rd,x2:x2,divMode:mode});PDFX.repD=r;return CXImport.saveXlsx(W)}).then(function(u){PDFX.outD=u}).catch(function(e){PDFX.repD=null;warn.push('Dywizje: '+(typeof e==='string'?e:'błąd zapisu Excela.'))}));
   Promise.all(jobs).then(function(){
     var g=PDFX.outG?PDFX.repG:null,d=PDFX.outD?PDFX.repD:null;
     if(g&&g.bestlapMissing)warn.push('Bestlap ma „'+g.bestlapMissing+'”, ale nie ma go na liście wyników — nie przyznano punktu.');
@@ -480,16 +483,19 @@ function pdfRun(){var P=PDFX.P;if(!P)return;var rg=+$('#pRound').value,rd=+$('#p
     if(d&&d.overflow)warn.push('Brak wolnych miejsc w tabeli dywizji dla: '+d.overflow.map(escH).join(', ')+'.');
     if(d)d.divs.forEach(function(x){if(x.noCol&&x.rows.length===0)return;if(x.noCol)warn.push(escH(x.name)+': brak kolumny rundy '+rd+'.')});
     $('#pdfWarn').innerHTML=warn.map(function(w){return'<div class="note warn" style="margin:14px 0 0">'+w+'</div>'}).join('');
-    $('#repG').innerHTML=g?'<table class="rt">'+g.map(function(x){return'<tr><td class="n">'+x.pos+'.</td><td>'+escH(x.name)+(x.isNew?'<span class="tag new">nowy</span>':'')+(x.bestlap?'<span class="tag bl">bestlap +1</span>':'')+'</td><td class="p">'+x.pts+'</td></tr>'}).join('')+(g.absent?'<tr><td></td><td style="color:var(--mut)">Pozostali w generalce ('+g.absent+'): 0 pkt</td><td></td></tr>':'')+'</table>':'<p class="sub">—</p>';
-    $('#repD').innerHTML=d?'<table class="rt">'+d.divs.filter(function(x){return x.rows.length}).map(function(x){return'<tr class="dvh"><td colspan="3">'+escH(x.name)+(x.filled?' · uzupełniono skład z listy przydziału':'')+'</td></tr>'+x.rows.map(function(y){return'<tr><td class="n">'+(y.dpos?y.dpos+'.':'')+'</td><td>'+escH(y.name)+(y.pos?' <span style="color:var(--mut)">(P'+y.pos+')</span>':'<span class="tag ab">nie jechał</span>')+'</td><td class="p">'+y.pts+'</td></tr>'}).join('')}).join('')+'</table>':'<p class="sub">—</p>';
+    $('#repG').innerHTML=g?'<table class="rt">'+g.map(function(x){return'<tr><td class="n">'+x.pos+'.</td><td>'+escH(x.name)+(x.isNew?'<span class="tag new">nowy</span>':'')+(x.bestlap?'<span class="tag bl">bestlap +1</span>':'')+'</td><td class="p">'+x.pts+'</td></tr>'}).join('')+(g.absent?'<tr><td></td><td style="color:var(--mut)">Pozostali w generalce ('+g.absent+'): 0 pkt</td><td></td></tr>':'')+'</table>':'<p class="sub">'+(doG?'—':'Pominięto — generalka nie zostanie zmieniona.')+'</p>';
+    $('#repD').innerHTML=d?'<table class="rt">'+d.divs.filter(function(x){return x.rows.length}).map(function(x){return'<tr class="dvh"><td colspan="3">'+escH(x.name)+(x.filled?' · uzupełniono skład z listy przydziału':'')+'</td></tr>'+x.rows.map(function(y){return'<tr><td class="n">'+(y.dpos?y.dpos+'.':'')+'</td><td>'+escH(y.name)+(y.pos?' <span style="color:var(--mut)">(P'+y.pos+')</span>':'<span class="tag ab">nie jechał</span>')+'</td><td class="p">'+y.pts+'</td></tr>'}).join('')}).join('')+'</table>':'<p class="sub">'+(doD?'—':'Pominięto — dywizje nie zostaną zmienione.')+'</p>';
     $('#pdfSave').disabled=!(PDFX.outG||PDFX.outD);pvpSend()})}
-function pvpSend(){var f=$('#pvp');if(!PDFX.ready||!f.contentWindow)return;var m={type:'cx-preview',cat:PDFX.cat};if(PDFX.outG)m.buf=PDFX.outG.slice(0).buffer;if(PDFX.outD)m.dbuf=PDFX.outD.slice(0).buffer;f.contentWindow.postMessage(m,location.origin)}
+function pvpSend(){var f=$('#pvp');if(!PDFX.ready||!f.contentWindow)return;var m={type:'cx-preview',cat:PDFX.cat};var g=PDFX.outG?PDFX.outG.slice(0).buffer:(PDFX.srcG?PDFX.srcG.slice(0):null),d=PDFX.outD?PDFX.outD.slice(0).buffer:(PDFX.srcD?PDFX.srcD.slice(0):null);if(g)m.buf=g;if(d)m.dbuf=d;f.contentWindow.postMessage(m,location.origin)}
 function pvpLoad(){var f=$('#pvp');PDFX.ready=false;f.onload=function(){PDFX.ready=true;setTimeout(pvpSend,400)};f.src='index.html?preview=1&t='+Date.now()}
 $('#pdfFile').addEventListener('change',function(){if(!$('#pvp').getAttribute('src'))pvpLoad();pdfPick(this.files[0])});
 var pdrop=$('#pdfDrop');['dragenter','dragover'].forEach(function(t){pdrop.addEventListener(t,function(e){e.preventDefault();pdrop.classList.add('over')})});
 ['dragleave','drop'].forEach(function(t){pdrop.addEventListener(t,function(e){e.preventDefault();pdrop.classList.remove('over')})});
 pdrop.addEventListener('drop',function(e){var f=e.dataTransfer&&e.dataTransfer.files[0];if(f){if(!$('#pvp').getAttribute('src'))pvpLoad();pdfPick(f)}});
-['pRound','pDRound','pMode','pX2'].forEach(function(id){$('#'+id).addEventListener(id==='pX2'||id==='pMode'?'change':'input',function(){clearTimeout(PDFX.T);PDFX.T=setTimeout(pdfRun,300)})});
+/* zaznaczenie generalki/dywizji: gdy pliku jeszcze nie było, spróbuj pobrać go ponownie */
+['pDoG','pDoD'].forEach(function(id){$('#'+id).addEventListener('change',function(){if(!this.checked||!PDFX.P)return;var d=id==='pDoD';if(d?PDFX.srcD:PDFX.srcG)return;
+  repoBuf(d?DIV_PATH:XLSX_PATH).then(function(b){if(b){if(d)PDFX.srcD=b;else PDFX.srcG=b;pdfRun()}})})});
+['pRound','pDRound','pMode','pX2','pDoG','pDoD'].forEach(function(id){$('#'+id).addEventListener(/^(pX2|pMode|pDoG|pDoD)$/.test(id)?'change':'input',function(){clearTimeout(PDFX.T);PDFX.T=setTimeout(pdfRun,300)})});
 [].forEach.call(document.querySelectorAll('.cat2 button'),function(b){b.addEventListener('click',function(){PDFX.cat=b.dataset.cat;[].forEach.call(document.querySelectorAll('.cat2 button'),function(x){x.classList.toggle('on',x===b)});$('#boxG').hidden=PDFX.cat!=='gen';$('#boxD').hidden=PDFX.cat!=='div';pvpSend()})});
 $('#pdfSave').addEventListener('click',function(){var b=this,rg=+$('#pRound').value;if(!PDFX.outG&&!PDFX.outD)return;b.disabled=true;b.textContent='Zapisuję…';msg('');
   var ev=(PDFX.P.event||'PDF')+' → runda '+rg,chain=Promise.resolve(),done=[],bk=null;
