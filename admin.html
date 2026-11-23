@@ -55,6 +55,20 @@ input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(26,166,232,.15)}
 .links a{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--deep)}
 small.h{display:block;font-size:12px;color:var(--mut);margin-top:6px}
 small.h a{color:var(--deep);text-decoration:underline}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.seg label{margin:0;cursor:pointer;text-transform:none;letter-spacing:0}
+.seg input{position:absolute;opacity:0;width:1px;height:1px}
+.seg span{display:block;padding:16px 18px;border:1px solid var(--line);border-radius:18px;background:var(--mist);transition:all .2s}
+.seg b{display:block;font-size:16px;color:var(--navy)}
+.seg small{font-size:12px;color:var(--mut);font-weight:500}
+.seg input:checked+span{border-color:var(--blue);background:#fff;box-shadow:0 0 0 4px rgba(26,166,232,.15)}
+.seg input:focus-visible+span{outline:2px solid var(--blue)}
+.pvbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:20px 0 10px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.dev{display:flex;gap:6px}
+.dev button{font:700 11px var(--f);letter-spacing:.12em;text-transform:uppercase;padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--navy);cursor:pointer}
+.dev button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.pvwrap{border:1px solid var(--line);border-radius:20px;overflow:hidden;background:var(--mist);display:flex;justify-content:center}
+#pv{width:100%;height:640px;border:0;background:#fff;transition:width .3s}
 .evf{display:grid;grid-template-columns:180px 150px 1fr;gap:12px}
 .evl li{align-items:center}
 .evl .ed{min-width:130px;font-weight:700;color:var(--navy)}
@@ -113,6 +127,17 @@ small.h a{color:var(--deep);text-decoration:underline}
         <label class="drop" id="drop"><input type="file" id="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"><b id="dropT">Kliknij lub przeciągnij plik .xlsx</b><span id="dropS">maks. 20 MB</span></label>
         <button class="btn" id="upBtn" type="button" disabled>Wgraj na stronę</button>
       </div>
+      <form class="card wide" id="fSort">
+        <h2>Kolejność wyników</h2>
+        <p class="sub">Główne punkty na stronie to zawsze suma wszystkich rund. Tu wybierasz, według czego zawodnicy są ustawieni w klasyfikacji. Podgląd poniżej pokazuje, jak strona będzie wyglądać — a jeśli wybierzesz plik Excel wyżej, podgląd pokaże go jeszcze przed wgraniem.</p>
+        <div class="seg" role="radiogroup">
+          <label><input type="radio" name="sort" value="total" checked><span><b>Suma (Total)</b><small>wszystkie rundy</small></span></label>
+          <label><input type="radio" name="sort" value="t4"><span><b>Total −4</b><small>bez 4 najsłabszych rund</small></span></label>
+        </div>
+        <div class="pvbar"><span id="pvInfo">Podgląd: wyniki ze strony</span><span class="dev"><button type="button" data-w="100%" class="on">Komputer</button><button type="button" data-w="390px">Telefon</button></span></div>
+        <div class="pvwrap"><iframe id="pv" title="Podgląd strony z wynikami" loading="lazy"></iframe></div>
+        <button class="btn" id="sortBtn">Zapisz ustawienie</button>
+      </form>
       <form class="card wide" id="fEv">
         <h2>Terminarz</h2>
         <p class="sub">Dodaj zawody — pojawią się na podstronie „Terminarz” po ok. 1–2 minutach. Tekst po „ &gt; ” wyświetla się jako podtytuł (np. kierunek jazdy).</p>
@@ -207,7 +232,7 @@ function loadCfg(token){
 function saveCfg(message){var txt=JSON.stringify(cfg,null,2)+'\n';return ghPut(CFG_PATH,b64(enc.encode(txt)),message,S.token)}
 
 /* ---------- sesja ---------- */
-function startSession(login,raw,token){return aesKey(raw).then(function(k){S={login:login,raw:raw,key:k,token:token};var st=store();if(st)st.setItem('cx_s',JSON.stringify({l:login,r:b64(raw),t:token}));renderUsers();show('#vPanel');loadEv()})}
+function startSession(login,raw,token){return aesKey(raw).then(function(k){S={login:login,raw:raw,key:k,token:token};var st=store();if(st)st.setItem('cx_s',JSON.stringify({l:login,r:b64(raw),t:token}));renderUsers();show('#vPanel');loadEv();loadSet()})}
 function endSession(){S=null;var st=store();if(st)st.removeItem('cx_s');$('#lP').value='';show('#vLogin')}
 function renderUsers(){var ul=$('#users');ul.innerHTML='';Object.keys(cfg.users).sort().forEach(function(n){var li=document.createElement('li'),b=document.createElement('b'),sp=document.createElement('span');b.textContent=n;sp.textContent=(S&&n===S.login)?'Ty':'admin';li.appendChild(b);li.appendChild(sp);ul.appendChild(li)});$('#fLogin').n.value=S?S.login:''}
 function checkPass(pass){var u=cfg.users[S.login];if(!u)return Promise.reject('Twoje konto nie istnieje w konfiguracji.');return unwrap(pass,u).catch(function(){throw 'Błędne aktualne hasło.'})}
@@ -238,11 +263,11 @@ $('#vSetup').addEventListener('submit',function(e){e.preventDefault();var f=this
 
 /* ---------- wgrywanie Excela ---------- */
 var picked=null;
-function pick(file){picked=null;$('#upBtn').disabled=true;if(!file)return;
+function pick(file){picked=null;$('#upBtn').disabled=true;if(!file)return;if(pvBuf){pvBuf=null;$('#pvInfo').textContent='Podgląd: wyniki ze strony';pvLoad()}
   if(!/\.xlsx$/i.test(file.name)){msg('To nie jest plik .xlsx.','bad');return}
   if(file.size>20*1024*1024){msg('Plik jest za duży (maks. 20 MB).','bad');return}
   file.arrayBuffer().then(function(buf){var u=new Uint8Array(buf);if(u[0]!==0x50||u[1]!==0x4B){msg('Plik nie wygląda na poprawny Excel (.xlsx).','bad');return}
-    picked=u;$('#dropT').textContent=file.name;$('#dropS').textContent=(file.size/1024).toFixed(0)+' KB — gotowy do wgrania';$('#upBtn').disabled=false;msg('')})}
+    picked=u;pvBuf=buf;$('#pvInfo').textContent='Podgląd: wybrany plik '+file.name+' (jeszcze nie wgrany)';pvSend();$('#dropT').textContent=file.name;$('#dropS').textContent=(file.size/1024).toFixed(0)+' KB — gotowy do wgrania';$('#upBtn').disabled=false;msg('')})}
 $('#file').addEventListener('change',function(){pick(this.files[0])});
 var drop=$('#drop');['dragenter','dragover'].forEach(function(t){drop.addEventListener(t,function(e){e.preventDefault();drop.classList.add('over')})});
 ['dragleave','drop'].forEach(function(t){drop.addEventListener(t,function(e){e.preventDefault();drop.classList.remove('over')})});
@@ -271,6 +296,21 @@ action($('#fAdd'),function(f){var n=f.n.value.trim(),n1=f.n1.value,n2=f.n2.value
 action($('#fToken'),function(f){var t=f.t.value.trim();var r=repo();
   return gh('/repos/'+r.owner+'/'+r.name,{token:t}).then(function(res){if(!res.ok)throw res;return res.json()}).then(function(info){if(info.permissions&&info.permissions.push===false)throw {status:403};S.token=t;return seal(S.key,enc.encode(t))}).then(function(tok){cfg.token=tok;return saveCfg('Panel: nowy token')}).then(function(){return startSession(S.login,S.raw,t)}).then(function(){return 'Token zapisany.'})});
 
+
+/* ---------- kolejność + podgląd ---------- */
+var SET_PATH='ustawienia.json', curSort='total', pvBuf=null, pvReady=false;
+function selSort(){var r=document.querySelector('#fSort input[name=sort]:checked');return r?r.value:'total'}
+function setRadio(v){var r=document.querySelector('#fSort input[value="'+v+'"]');if(r)r.checked=true}
+function pvSend(){var f=$('#pv');if(!pvReady||!f.contentWindow)return;var m={type:'cx-preview',sort:selSort()};if(pvBuf)m.buf=pvBuf.slice(0);f.contentWindow.postMessage(m,location.origin)}
+function pvLoad(){var f=$('#pv');pvReady=false;f.onload=function(){pvReady=true;setTimeout(pvSend,300)};f.src='index.html?preview=1&sort='+selSort()+'&t='+Date.now()}
+function loadSet(){return ghFile(SET_PATH,S&&S.token).then(function(f){if(f&&f.content)return JSON.parse(dec.decode(unb64(f.content)));throw 0})
+  .catch(function(){return fetch(SET_PATH+'?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():{}}).catch(function(){return{}})})
+  .then(function(j){curSort=j&&j.sort==='t4'?'t4':'total';setRadio(curSort);pvLoad()})}
+[].forEach.call(document.querySelectorAll('#fSort input[name=sort]'),function(r){r.addEventListener('change',pvSend)});
+[].forEach.call(document.querySelectorAll('.dev button'),function(b){b.addEventListener('click',function(){[].forEach.call(document.querySelectorAll('.dev button'),function(x){x.classList.toggle('on',x===b)});$('#pv').style.width=b.dataset.w})});
+$('#fSort').addEventListener('submit',function(e){e.preventDefault();var f=this,v=selSort();msg('');busy(f,true);
+  ghPut(SET_PATH,b64(enc.encode(JSON.stringify({sort:v},null,2)+'\n')),'Ustawienia: kolejność wg '+(v==='t4'?'Total -4':'sumy'),S.token)
+  .then(function(){curSort=v;msg('Zapisano: kolejność według '+(v==='t4'?'Total −4':'sumy (Total)')+'. Strona zmieni się w ciągu ok. 1–2 minut.')}).catch(function(err){msg(ghErr(err),'bad')}).then(function(){busy(f,false)})});
 
 /* ---------- terminarz ---------- */
 var EV_PATH='terminarz.json', events=[];
